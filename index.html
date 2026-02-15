@@ -1,0 +1,670 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>My Pet Pals</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <!-- ============ SPLASH SCREEN ============ -->
+  <div id="splash-screen" class="screen active">
+    <div class="splash-content">
+      <img src="splash.png" alt="My Pet Pals" class="splash-logo" />
+      <button id="btn-start" class="btn btn-big btn-rainbow bounce-loop">▶ START!</button>
+    </div>
+  </div>
+
+  <!-- ============ PET SELECTION SCREEN ============ -->
+  <div id="select-screen" class="screen">
+    <h1 class="title-text">Choose Your Pet Pal!</h1>
+    <div class="pet-cards">
+      <div class="pet-card" data-pet="dog" tabindex="0">
+        <div class="card-pet-preview">
+          <div class="mini-pet dog-mini"></div>
+        </div>
+        <h2>Doggo</h2>
+        <p>Energetic &amp; playful!</p>
+      </div>
+      <div class="pet-card" data-pet="cat" tabindex="0">
+        <div class="card-pet-preview">
+          <div class="mini-pet cat-mini"></div>
+        </div>
+        <h2>Kitty</h2>
+        <p>Picky &amp; fluffy!</p>
+      </div>
+      <div class="pet-card" data-pet="bird" tabindex="0">
+        <div class="card-pet-preview">
+          <div class="mini-pet bird-mini"></div>
+        </div>
+        <h2>Birdie</h2>
+        <p>Sings &amp; chirps!</p>
+      </div>
+    </div>
+    <div class="name-input-area" id="name-area" style="display:none;">
+      <label for="pet-name-input">Name your pal:</label>
+      <input type="text" id="pet-name-input" maxlength="12" placeholder="Fluffy" />
+      <button id="btn-go" class="btn btn-big btn-green">Let's Go! 🎉</button>
+    </div>
+  </div>
+
+  <!-- ============ MAIN GAME SCREEN ============ -->
+  <div id="game-screen" class="screen">
+    <!-- Top Bar: Stats -->
+    <div class="top-bar">
+      <div class="pet-name-display" id="pet-name-display"></div>
+      <div class="happiness-meter">
+        <span class="happiness-label">Happiness:</span>
+        <span id="happiness-face" class="happiness-face">😄</span>
+        <div class="stat-bar-bg happiness-bar-bg">
+          <div class="stat-bar-fill happiness-bar-fill" id="happiness-bar"></div>
+        </div>
+        <span id="happiness-val" class="stat-val"></span>
+      </div>
+      <div class="stats-row">
+        <div class="stat-item">
+          <span class="stat-emoji">🍎</span>
+          <div class="stat-bar-bg"><div class="stat-bar-fill hunger-fill" id="hunger-bar"></div></div>
+          <span id="hunger-val" class="stat-val"></span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-emoji">🫧</span>
+          <div class="stat-bar-bg"><div class="stat-bar-fill clean-fill" id="clean-bar"></div></div>
+          <span id="clean-val" class="stat-val"></span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-emoji">🎈</span>
+          <div class="stat-bar-bg"><div class="stat-bar-fill fun-fill" id="fun-bar"></div></div>
+          <span id="fun-val" class="stat-val"></span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-emoji">🪮</span>
+          <div class="stat-bar-bg"><div class="stat-bar-fill groom-fill" id="groom-bar"></div></div>
+          <span id="groom-val" class="stat-val"></span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Pet Stage -->
+    <div class="pet-stage" id="pet-stage">
+      <!-- Speech Bubble -->
+      <div class="speech-bubble" id="speech-bubble">
+        <span id="speech-text">Hi hi! I'm your tiny buddy!</span>
+      </div>
+      <!-- Pet container (drawn via JS) -->
+      <div id="pet-container" class="pet-container"></div>
+      <!-- Accessory overlay -->
+      <div id="accessory-overlay" class="accessory-overlay"></div>
+      <!-- Reaction particles -->
+      <div id="particles" class="particles-container"></div>
+    </div>
+
+    <!-- Event Banner -->
+    <div id="event-banner" class="event-banner hidden">
+      <span id="event-text"></span>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="action-buttons">
+      <button class="btn btn-action btn-feed" id="btn-feed" data-key="1">
+        <span class="btn-icon">🍽️</span><span class="btn-label">Feed<br><small>(1)</small></span>
+      </button>
+      <button class="btn btn-action btn-shower" id="btn-shower" data-key="2">
+        <span class="btn-icon">🚿</span><span class="btn-label">Shower<br><small>(2)</small></span>
+      </button>
+      <button class="btn btn-action btn-play" id="btn-play" data-key="3">
+        <span class="btn-icon">🎾</span><span class="btn-label">Play<br><small>(3)</small></span>
+      </button>
+      <button class="btn btn-action btn-groom" id="btn-groom" data-key="4">
+        <span class="btn-icon">✨</span><span class="btn-label">Groom<br><small>(4)</small></span>
+      </button>
+      <button class="btn btn-action btn-walk" id="btn-walk" data-key="5">
+        <span class="btn-icon">🐕</span><span class="btn-label">Walk<br><small>(5)</small></span>
+      </button>
+      <button class="btn btn-action btn-sleep" id="btn-sleep" data-key="6">
+        <span class="btn-icon">😴</span><span class="btn-label">Sleep<br><small>(6)</small></span>
+      </button>
+    </div>
+
+    <!-- Bottom Bar -->
+    <div class="bottom-bar">
+      <button class="btn btn-small btn-stickers" id="btn-stickers">🌟 Stickers</button>
+      <div class="hearts-display">❤️ <span id="hearts-count">0</span></div>
+      <button class="btn btn-small btn-new-pet" id="btn-new-pet">🔄 New Pet</button>
+    </div>
+  </div>
+
+  <!-- ============ DINING ROOM SCENE (FEED) ============ -->
+  <div id="feed-scene" class="screen">
+    <!-- Room background layers -->
+    <div class="dining-room">
+      <!-- Wall -->
+      <div class="dining-wall">
+        <div class="wall-picture">🖼️</div>
+        <div class="wall-lamp wall-lamp-l"></div>
+        <div class="wall-lamp wall-lamp-r"></div>
+      </div>
+      <!-- Floor -->
+      <div class="dining-floor"></div>
+      <!-- Table -->
+      <div class="dining-table">
+        <div class="tablecloth"></div>
+        <div class="tablecloth-fringe"></div>
+        <!-- Plate -->
+        <div class="plate">
+          <div class="plate-inner"></div>
+          <div id="plate-food" class="plate-food"></div>
+        </div>
+        <!-- Glass -->
+        <div class="glass">
+          <div class="glass-liquid"></div>
+        </div>
+        <!-- Napkin -->
+        <div class="napkin"></div>
+      </div>
+      <!-- Pet at table -->
+      <div class="dining-pet-spot">
+        <div id="dining-pet-container" class="pet-container"></div>
+      </div>
+      <!-- Speech bubble in dining scene -->
+      <div class="dining-speech-bubble" id="dining-speech">
+        <span id="dining-speech-text">Yummy time!</span>
+      </div>
+      <!-- Floating food particles -->
+      <div id="dining-particles" class="particles-container"></div>
+    </div>
+    <!-- Snack picker at bottom -->
+    <div class="dining-bottom-bar">
+      <h2 class="dining-title">Pick a Snack! 🍽️</h2>
+      <div class="snack-options">
+        <button class="btn btn-snack" data-snack="kibble">🍪 Kibble</button>
+        <button class="btn btn-snack" data-snack="fish">🐟 Fish Treat</button>
+        <button class="btn btn-snack" data-snack="seeds">🌻 Seeds</button>
+      </div>
+      <button class="btn btn-close-overlay" id="feed-back">⬅ Back</button>
+    </div>
+  </div>
+
+  <!-- ============ PARK SCENE (PLAY) ============ -->
+  <div id="park-scene" class="screen">
+    <div class="park">
+      <!-- Sky -->
+      <div class="park-sky">
+        <div class="cloud cloud-1"></div>
+        <div class="cloud cloud-2"></div>
+        <div class="cloud cloud-3"></div>
+        <div class="sun"></div>
+      </div>
+      <!-- Background trees -->
+      <div class="park-trees">
+        <div class="tree tree-1">
+          <div class="tree-top"></div>
+          <div class="tree-trunk"></div>
+        </div>
+        <div class="tree tree-2">
+          <div class="tree-top"></div>
+          <div class="tree-trunk"></div>
+        </div>
+        <div class="tree tree-3">
+          <div class="tree-top"></div>
+          <div class="tree-trunk"></div>
+        </div>
+      </div>
+      <!-- Grass / ground -->
+      <div class="park-ground">
+        <div class="grass-blade gb-1"></div>
+        <div class="grass-blade gb-2"></div>
+        <div class="grass-blade gb-3"></div>
+        <div class="grass-blade gb-4"></div>
+        <div class="grass-blade gb-5"></div>
+        <!-- Flowers -->
+        <div class="park-flower pf-1">🌷</div>
+        <div class="park-flower pf-2">🌻</div>
+        <div class="park-flower pf-3">🌸</div>
+        <!-- Bench -->
+        <div class="park-bench"></div>
+      </div>
+      <!-- Fence -->
+      <div class="park-fence">
+        <div class="fence-post"></div>
+        <div class="fence-post"></div>
+        <div class="fence-post"></div>
+        <div class="fence-post"></div>
+        <div class="fence-post"></div>
+        <div class="fence-post"></div>
+        <div class="fence-post"></div>
+        <div class="fence-rail fence-rail-top"></div>
+        <div class="fence-rail fence-rail-bottom"></div>
+      </div>
+      <!-- Pet at park -->
+      <div class="park-pet-spot">
+        <div id="park-pet-container" class="pet-container"></div>
+      </div>
+      <!-- Speech bubble in park -->
+      <div class="park-speech-bubble" id="park-speech">
+        <span id="park-speech-text">Let's play!</span>
+      </div>
+      <!-- Particles -->
+      <div id="park-particles" class="particles-container"></div>
+    </div>
+    <!-- Play mini-game area at bottom -->
+    <div class="park-bottom-bar">
+      <h2 id="play-title" class="park-title">Catch the Ball! 🎾</h2>
+      <p>Clicks: <span id="play-clicks">0</span> / 5</p>
+      <div class="play-area" id="play-area"></div>
+      <button class="btn btn-close-overlay" id="park-back" style="display:none;">⬅ Back to Home</button>
+    </div>
+  </div>
+
+  <!-- ============ BATHROOM SCENE (SHOWER) ============ -->
+  <div id="bath-scene" class="screen">
+    <div class="bathroom">
+      <!-- Tiled wall -->
+      <div class="bath-wall"></div>
+      <!-- Floor -->
+      <div class="bath-floor"></div>
+      <!-- Towel rack on wall -->
+      <div class="towel-rack">
+        <div class="towel-hanging"></div>
+      </div>
+      <!-- Rubber duck -->
+      <div class="rubber-duck">🦆</div>
+      <!-- Shelf with shampoo -->
+      <div class="bath-shelf">
+        <div class="shampoo-bottle"></div>
+        <div class="shampoo-bottle sb-pink"></div>
+      </div>
+
+      <!-- Bathtub -->
+      <div class="bathtub">
+        <div class="bathtub-inner"></div>
+        <div class="bathtub-rim"></div>
+        <!-- Water inside tub (fills up) -->
+        <div class="tub-water" id="tub-water"></div>
+        <!-- Bubbles floating in tub -->
+        <div class="tub-bubbles" id="tub-bubbles"></div>
+        <!-- Pet in tub -->
+        <div class="bath-pet-spot">
+          <div id="bath-pet-container" class="pet-container"></div>
+        </div>
+      </div>
+
+      <!-- Showerhead -->
+      <div class="showerhead" id="showerhead">
+        <div class="showerhead-neck"></div>
+        <div class="showerhead-head"></div>
+        <!-- Water drops (shown when water is on) -->
+        <div class="water-streams" id="water-streams"></div>
+      </div>
+
+      <!-- Speech bubble -->
+      <div class="bath-speech-bubble" id="bath-speech">
+        <span id="bath-speech-text">Bath time!</span>
+      </div>
+      <!-- Particles -->
+      <div id="bath-particles" class="particles-container"></div>
+    </div>
+
+    <!-- Bottom bar -->
+    <div class="bath-bottom-bar">
+      <h2 class="bath-title">🚿 Shower Time!</h2>
+      <p class="bath-hint">Hold the button to shower your pet!</p>
+      <div class="wash-meter-bg">
+        <div class="wash-meter-fill" id="wash-meter"></div>
+      </div>
+      <button class="btn btn-water" id="btn-water">💧 Hold to Shower!</button>
+      <button class="btn btn-close-overlay" id="bath-back">⬅ Back</button>
+    </div>
+  </div>
+
+  <!-- ============ BLOWDRY SCENE ============ -->
+  <div id="dry-scene" class="screen">
+    <div class="dryroom">
+      <!-- Same bathroom wall but brighter -->
+      <div class="dry-wall"></div>
+      <div class="dry-floor"></div>
+      <!-- Bath mat / towel on floor -->
+      <div class="bath-mat"></div>
+      <!-- Steam particles -->
+      <div class="steam-area" id="steam-area"></div>
+      <!-- Pet standing on mat (wet → dry) -->
+      <div class="dry-pet-spot">
+        <div id="dry-pet-container" class="pet-container"></div>
+        <!-- Water drip drops on pet (disappear as drying) -->
+        <div class="wet-drops" id="wet-drops"></div>
+      </div>
+      <!-- Speech bubble -->
+      <div class="dry-speech-bubble" id="dry-speech">
+        <span id="dry-speech-text">I'm all wet!</span>
+      </div>
+      <!-- Particles -->
+      <div id="dry-particles" class="particles-container"></div>
+    </div>
+
+    <!-- Bottom bar -->
+    <div class="dry-bottom-bar">
+      <h2 class="dry-title">💨 Blowdry Time!</h2>
+      <p class="dry-hint">Drag the dryer over your pet to dry them!</p>
+      <div class="dry-meter-bg">
+        <div class="dry-meter-fill" id="dry-meter"></div>
+      </div>
+      <p id="dry-result" class="groom-result"></p>
+    </div>
+
+    <!-- THE BLOWDRYER (draggable) -->
+    <div id="blowdryer" class="blowdryer">💨</div>
+  </div>
+
+  <!-- ============ BARBER SHOP SCENE (GROOM) ============ -->
+  <div id="groom-scene" class="screen">
+    <div class="barbershop">
+      <!-- Wall -->
+      <div class="barber-wall">
+        <!-- Mirror -->
+        <div class="barber-mirror">
+          <div class="mirror-shine"></div>
+        </div>
+        <!-- Shelf with products -->
+        <div class="barber-shelf">
+          <div class="shelf-bottle sb-1"></div>
+          <div class="shelf-bottle sb-2"></div>
+          <div class="shelf-bottle sb-3"></div>
+        </div>
+        <!-- Barber pole -->
+        <div class="barber-pole-wrap">
+          <div class="barber-pole"></div>
+        </div>
+        <!-- Sign -->
+        <div class="barber-sign">✂️ Pet Salon</div>
+      </div>
+      <!-- Floor -->
+      <div class="barber-floor"></div>
+
+      <!-- Grooming area (pet + interactive brush zone) -->
+      <div class="barber-groom-zone" id="barber-groom-zone">
+        <!-- Chair / platform for pet -->
+        <div class="barber-chair">
+          <div class="chair-seat"></div>
+          <div class="chair-base"></div>
+        </div>
+        <!-- Pet on chair -->
+        <div class="barber-pet-spot">
+          <div id="barber-pet-container" class="pet-container"></div>
+        </div>
+        <!-- Fur / feather fluff particles that fly off when brushed -->
+        <div id="barber-fluff" class="particles-container"></div>
+      </div>
+
+      <!-- Speech bubble -->
+      <div class="barber-speech-bubble" id="barber-speech">
+        <span id="barber-speech-text">Brush me!</span>
+      </div>
+      <!-- Sparkle particles -->
+      <div id="barber-particles" class="particles-container"></div>
+    </div>
+
+    <!-- Bottom bar: brush meter + controls -->
+    <div class="barber-bottom-bar">
+      <h2 class="barber-title">Brush Time! 🪮</h2>
+      <p class="barber-hint">Drag the brush over your pet to groom!</p>
+      <div class="brush-meter-bg">
+        <div class="brush-meter-fill" id="brush-meter"></div>
+      </div>
+      <p id="groom-result" class="groom-result"></p>
+      <button class="btn btn-close-overlay" id="groom-back" style="display:none;">⬅ Back</button>
+    </div>
+
+    <!-- THE BRUSH (draggable) -->
+    <div id="barber-brush" class="barber-brush">🪮</div>
+  </div>
+
+  <!-- ============ WALK SCENE ============ -->
+  <div id="walk-scene" class="screen">
+    <div class="walkpark">
+      <!-- Sky -->
+      <div class="walk-sky">
+        <div class="cloud cloud-w1"></div>
+        <div class="cloud cloud-w2"></div>
+        <div class="cloud cloud-w3"></div>
+        <div class="walk-sun"></div>
+      </div>
+      <!-- Distant hills -->
+      <div class="walk-hills"></div>
+      <!-- Background trees -->
+      <div class="walk-trees">
+        <div class="walk-tree wt-1"><div class="wt-top"></div><div class="wt-trunk"></div></div>
+        <div class="walk-tree wt-2"><div class="wt-top"></div><div class="wt-trunk"></div></div>
+        <div class="walk-tree wt-3"><div class="wt-top"></div><div class="wt-trunk"></div></div>
+        <div class="walk-tree wt-4"><div class="wt-top"></div><div class="wt-trunk"></div></div>
+        <div class="walk-tree wt-5"><div class="wt-top"></div><div class="wt-trunk"></div></div>
+      </div>
+      <!-- Grass ground -->
+      <div class="walk-grass"></div>
+      <!-- Scenery elements on grass -->
+      <div class="walk-scenery">
+        <div class="walk-flower wfl-1">🌷</div>
+        <div class="walk-flower wfl-2">🌻</div>
+        <div class="walk-flower wfl-3">🌸</div>
+        <div class="walk-flower wfl-4">🌼</div>
+        <div class="walk-flower wfl-5">🌺</div>
+        <div class="walk-flower wfl-6">🌷</div>
+        <div class="walk-lamppost wlp-1"></div>
+        <div class="walk-lamppost wlp-2"></div>
+        <div class="walk-bush wbush-1"></div>
+        <div class="walk-bush wbush-2"></div>
+        <div class="walk-bush wbush-3"></div>
+      </div>
+      <!-- Brown bumpy pathway (the path scrolls to simulate walking) -->
+      <div class="walk-pathway-wrap">
+        <div class="walk-pathway" id="walk-pathway">
+          <!-- Pebbles / bumps on path -->
+          <div class="path-bumps" id="path-bumps"></div>
+        </div>
+      </div>
+      <!-- Pet on path (moves with a little bounce) -->
+      <div class="walk-pet-spot" id="walk-pet-spot">
+        <div id="walk-pet-container" class="pet-container"></div>
+        <!-- Leash line -->
+        <div class="walk-leash" id="walk-leash"></div>
+      </div>
+      <!-- Paw prints that appear behind pet -->
+      <div class="walk-paws" id="walk-paws"></div>
+      <!-- Random encounter items on path -->
+      <div class="walk-items" id="walk-items"></div>
+      <!-- NPC park pals (other pets of the same type) -->
+      <div class="npc-pets-area" id="npc-pets-area"></div>
+      <!-- Hearts/friendship particles between pets -->
+      <div class="npc-hearts-area" id="npc-hearts-area"></div>
+      <!-- Speech bubble -->
+      <div class="walk-speech-bubble" id="walk-speech">
+        <span id="walk-speech-text">Walkies!</span>
+      </div>
+      <!-- Particles -->
+      <div id="walk-particles" class="particles-container"></div>
+    </div>
+
+    <!-- Bottom bar -->
+    <div class="walk-bottom-bar">
+      <h2 class="walk-title">🐕 Walk Time!</h2>
+      <p class="walk-hint">Tap the walk button to take steps!</p>
+      <div class="walk-meter-bg">
+        <div class="walk-meter-fill" id="walk-meter"></div>
+      </div>
+      <p class="walk-distance" id="walk-distance">0 steps</p>
+      <button class="btn btn-step" id="btn-step">🐾 Walk!</button>
+      <button class="btn btn-close-overlay" id="walk-back" style="display:none;">⬅ Back Home</button>
+    </div>
+  </div>
+
+  <!-- ============ PLAYGROUND SCENE (Pet Interaction) ============ -->
+  <div id="playground-scene" class="screen">
+    <div class="playground">
+      <!-- Sky -->
+      <div class="pg-sky">
+        <div class="cloud cloud-pg1"></div>
+        <div class="cloud cloud-pg2"></div>
+        <div class="pg-sun"></div>
+      </div>
+      <!-- Background trees -->
+      <div class="pg-bg-trees">
+        <div class="pg-tree pgt-1"><div class="pgt-top"></div><div class="pgt-trunk"></div></div>
+        <div class="pg-tree pgt-2"><div class="pgt-top"></div><div class="pgt-trunk"></div></div>
+        <div class="pg-tree pgt-3"><div class="pgt-top"></div><div class="pgt-trunk"></div></div>
+      </div>
+      <!-- Grass -->
+      <div class="pg-grass"></div>
+      <!-- Flowers on grass -->
+      <div class="pg-flowers">
+        <div class="pg-flower pgf-1">🌷</div>
+        <div class="pg-flower pgf-2">🌻</div>
+        <div class="pg-flower pgf-3">🌸</div>
+        <div class="pg-flower pgf-4">🌼</div>
+      </div>
+
+      <!-- === THE SLIDE === -->
+      <div class="pg-slide" id="pg-slide">
+        <div class="slide-ladder"></div>
+        <div class="slide-platform"></div>
+        <div class="slide-chute"></div>
+        <div class="slide-label">🛝 Slide!</div>
+      </div>
+
+      <!-- === TRICK ZONES (on the grass) === -->
+      <div class="pg-trick-zone pg-trick-jump" id="pg-trick-jump">
+        <div class="trick-ring"></div>
+        <div class="trick-label">⬆️ Jump!</div>
+      </div>
+      <div class="pg-trick-zone pg-trick-spin" id="pg-trick-spin">
+        <div class="trick-star">⭐</div>
+        <div class="trick-label">🌀 Spin!</div>
+      </div>
+      <div class="pg-trick-zone pg-trick-roll" id="pg-trick-roll">
+        <div class="trick-mat"></div>
+        <div class="trick-label">🔄 Roll!</div>
+      </div>
+
+      <!-- Your pet (controllable) -->
+      <div class="pg-my-pet" id="pg-my-pet">
+        <div id="pg-my-pet-container" class="pet-container"></div>
+      </div>
+      <!-- NPC pet (follows along) -->
+      <div class="pg-npc-pet" id="pg-npc-pet">
+        <div id="pg-npc-pet-container" class="pet-container"></div>
+        <div class="pg-npc-tag" id="pg-npc-tag"></div>
+      </div>
+
+      <!-- Speech bubbles -->
+      <div class="pg-speech-bubble pg-my-speech" id="pg-my-speech">
+        <span id="pg-my-speech-text">Let's play!</span>
+      </div>
+      <div class="pg-speech-bubble pg-npc-speech" id="pg-npc-speech">
+        <span id="pg-npc-speech-text">Yay!</span>
+      </div>
+
+      <!-- Hearts / sparkles -->
+      <div class="pg-particles" id="pg-particles"></div>
+    </div>
+
+    <!-- Bottom bar -->
+    <div class="pg-bottom-bar">
+      <h2 class="pg-title" id="pg-title">🎪 Playground!</h2>
+      <p class="pg-hint">Tap the activities to play together!</p>
+      <div class="pg-score-row">
+        <span>Fun: </span>
+        <div class="pg-fun-meter-bg">
+          <div class="pg-fun-meter-fill" id="pg-fun-meter"></div>
+        </div>
+        <span id="pg-tricks-done">0</span><span> / 4 tricks</span>
+      </div>
+      <button class="btn btn-close-overlay" id="pg-back" style="display:none;">⬅ Back to Walk</button>
+    </div>
+  </div>
+
+  <!-- ============ SLEEP / BEDROOM SCENE ============ -->
+  <div id="sleep-scene" class="screen">
+    <div class="bedroom">
+      <!-- Dark wall -->
+      <div class="bed-wall"></div>
+      <!-- Floor -->
+      <div class="bed-floor"></div>
+      <!-- Night window with moon & stars -->
+      <div class="bed-window">
+        <div class="window-frame"></div>
+        <div class="window-sky">
+          <div class="window-moon">🌙</div>
+          <div class="window-star ws-1">⭐</div>
+          <div class="window-star ws-2">⭐</div>
+          <div class="window-star ws-3">⭐</div>
+          <div class="window-star ws-4">✨</div>
+          <div class="window-star ws-5">⭐</div>
+        </div>
+        <div class="window-curtain curtain-l"></div>
+        <div class="window-curtain curtain-r"></div>
+      </div>
+      <!-- Nightstand with lamp -->
+      <div class="nightstand">
+        <div class="night-lamp">
+          <div class="lamp-shade"></div>
+          <div class="lamp-base"></div>
+          <div class="lamp-glow"></div>
+        </div>
+      </div>
+      <!-- Rug -->
+      <div class="bed-rug"></div>
+      <!-- THE BED: blue with bright yellow stars -->
+      <div class="pet-bed" id="pet-bed">
+        <div class="bed-frame">
+          <div class="bed-headboard"></div>
+          <div class="bed-mattress"></div>
+          <div class="bed-blanket" id="bed-blanket">
+            <div class="blanket-star bs-1">⭐</div>
+            <div class="blanket-star bs-2">⭐</div>
+            <div class="blanket-star bs-3">⭐</div>
+            <div class="blanket-star bs-4">⭐</div>
+            <div class="blanket-star bs-5">⭐</div>
+            <div class="blanket-star bs-6">⭐</div>
+          </div>
+          <div class="bed-pillow"></div>
+        </div>
+        <!-- Pet in bed -->
+        <div class="bed-pet-spot">
+          <div id="bed-pet-container" class="pet-container"></div>
+        </div>
+      </div>
+      <!-- Zzz floating animation -->
+      <div class="zzz-area" id="zzz-area"></div>
+      <!-- Speech bubble -->
+      <div class="bed-speech-bubble" id="bed-speech">
+        <span id="bed-speech-text">Sleepy time...</span>
+      </div>
+      <!-- Particles (sparkles on wake) -->
+      <div id="bed-particles" class="particles-container"></div>
+    </div>
+
+    <!-- Bottom bar (minimal) -->
+    <div class="bed-bottom-bar">
+      <h2 class="bed-title" id="bed-title">🌙 Nighty Night!</h2>
+      <p class="bed-hint" id="bed-hint">Your pet is sleeping...</p>
+    </div>
+  </div>
+
+  <!-- ============ EVENT VISUAL OVERLAY (shows items from events on the pet) ============ -->
+  <div id="event-visual" class="event-visual hidden"></div>
+
+  <!-- ============ STICKER BOOK OVERLAY ============ -->
+  <div id="sticker-overlay" class="overlay hidden">
+    <div class="overlay-panel sticker-panel">
+      <h2>🌟 Sticker Book</h2>
+      <div class="sticker-grid" id="sticker-grid"></div>
+      <h3>Accessories</h3>
+      <div class="accessory-grid" id="accessory-grid"></div>
+      <button class="btn btn-close-overlay" id="sticker-close">✖ Close</button>
+    </div>
+  </div>
+
+  <!-- Confetti container -->
+  <div id="confetti-container" class="confetti-container"></div>
+
+  <script src="script.js"></script>
+</body>
+</html>

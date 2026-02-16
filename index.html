@@ -40,6 +40,13 @@
         <h2>Birdie</h2>
         <p>Sings &amp; chirps!</p>
       </div>
+      <div class="pet-card" data-pet="hamster" tabindex="0">
+        <div class="card-pet-preview">
+          <div class="mini-pet hamster-mini"></div>
+        </div>
+        <h2>Hamster</h2>
+        <p>Tiny &amp; cheeky!</p>
+      </div>
     </div>
     <div class="name-input-area" id="name-area" style="display:none;">
       <label for="pet-name-input">Name your pal:</label>
@@ -87,6 +94,198 @@
 
     <!-- Pet Stage -->
     <div class="pet-stage" id="pet-stage">
+      <!-- Living Room Background -->
+      <div class="living-room">
+        <!-- Wall -->
+        <div class="lr-wall">
+          <!-- Window with curtains -->
+          <div class="lr-window">
+            <div class="lr-window-frame"></div>
+            <div class="lr-window-sky">
+              <div class="lr-window-cloud lrc-1"></div>
+              <div class="lr-window-cloud lrc-2"></div>
+            </div>
+            <div class="lr-curtain lr-curtain-l"></div>
+            <div class="lr-curtain lr-curtain-r"></div>
+          </div>
+          <!-- Wall art -->
+          <div class="lr-wall-art lr-wall-art-l">🖼️</div>
+          <div class="lr-wall-art lr-wall-art-r">🏔️</div>
+          <!-- Wall shelf -->
+          <div class="lr-wall-shelf">
+            <div class="lr-shelf-book lrb-1"></div>
+            <div class="lr-shelf-book lrb-2"></div>
+            <div class="lr-shelf-book lrb-3"></div>
+            <div class="lr-shelf-plant">🌿</div>
+          </div>
+          <!-- Wall clock -->
+          <div class="lr-clock">🕐</div>
+        </div>
+        <!-- Floor -->
+        <div class="lr-floor"></div>
+        <!-- Rug -->
+        <div class="lr-rug"></div>
+        <!-- Couch -->
+        <div class="lr-couch">
+          <div class="lr-couch-back"></div>
+          <div class="lr-couch-seat"></div>
+          <div class="lr-couch-arm lr-couch-arm-l"></div>
+          <div class="lr-couch-arm lr-couch-arm-r"></div>
+          <div class="lr-cushion lr-cushion-l"></div>
+          <div class="lr-cushion lr-cushion-r"></div>
+          <div class="lr-couch-leg lr-cleg-1"></div>
+          <div class="lr-couch-leg lr-cleg-2"></div>
+          <div class="lr-couch-leg lr-cleg-3"></div>
+          <div class="lr-couch-leg lr-cleg-4"></div>
+        </div>
+        <!-- Coffee Table -->
+        <div class="lr-coffee-table">
+          <div class="lr-ct-top"></div>
+          <div class="lr-ct-leg lr-ct-leg-l"></div>
+          <div class="lr-ct-leg lr-ct-leg-r"></div>
+          <div class="lr-ct-mug">☕</div>
+          <div class="lr-ct-book"></div>
+        </div>
+        <!-- Floor Lamp -->
+        <div class="lr-floor-lamp">
+          <div class="lr-lamp-shade"></div>
+          <div class="lr-lamp-pole"></div>
+          <div class="lr-lamp-base"></div>
+          <div class="lr-lamp-glow"></div>
+        </div>
+        <!-- Side Table -->
+        <div class="lr-side-table">
+          <div class="lr-st-top"></div>
+          <div class="lr-st-leg"></div>
+          <div class="lr-st-vase">🌸</div>
+        </div>
+        <!-- Potted Plant -->
+        <div class="lr-plant">
+          <div class="lr-plant-pot"></div>
+          <div class="lr-plant-leaves">🪴</div>
+        </div>
+        <!-- Cat/dog toy on floor -->
+        <div class="lr-toy">🧸</div>
+        <!-- Mess overlay (items appear based on cleanliness stat, tappable to clean) -->
+        <div class="lr-mess" id="lr-mess">
+          <div class="mess-item" data-mess="0" style="bottom:10%;left:18%;">🐾</div>
+          <div class="mess-item" data-mess="1" style="bottom:6%;left:55%;">🐾</div>
+          <div class="mess-item" data-mess="2" style="bottom:14%;right:20%;">🍪</div>
+          <div class="mess-item" data-mess="3" style="bottom:4%;left:38%;">💧</div>
+          <div class="mess-item" data-mess="4" style="bottom:18%;left:70%;">🧶</div>
+          <div class="mess-item" data-mess="5" style="bottom:8%;right:35%;">🐾</div>
+          <div class="mess-item" data-mess="6" style="bottom:2%;left:12%;">🍂</div>
+          <div class="mess-item" data-mess="7" style="bottom:20%;right:10%;">🧦</div>
+          <div class="mess-item mess-dust" data-mess="8" style="bottom:12%;left:45%;">✨</div>
+          <div class="mess-item" data-mess="9" style="bottom:16%;left:25%;">💧</div>
+        </div>
+        <!-- Clean sparkle layer -->
+        <div class="lr-clean-sparkles" id="lr-clean-sparkles"></div>
+        <!-- Seasonal decorations layer -->
+        <div class="lr-season" id="lr-season"></div>
+      </div>
+
+      <!-- Visiting friend spot (outside living-room so it renders on top) -->
+      <div class="lr-visitor-spot" id="lr-visitor-spot"></div>
+      <!-- Doorbell notification (hidden until visitor arrives) -->
+      <div class="lr-doorbell" id="lr-doorbell" style="display:none;">
+        <span class="doorbell-ring">🔔</span>
+        <span class="doorbell-label">Knock knock!</span>
+      </div>
+      <!-- Permanent party button -->
+      <div class="lr-invite-btn" id="lr-invite-btn">
+        <span class="invite-icon">🎉</span>
+        <span class="invite-label">Throw Party</span>
+      </div>
+
+      <!-- Birthday surprise overlay -->
+      <div class="bday-overlay" id="bday-overlay" style="display:none;">
+        <div class="bday-banner" id="bday-banner">🎂 Happy Birthday! 🎂</div>
+        <div class="bday-confetti" id="bday-confetti"></div>
+        <div class="bday-friends" id="bday-friends"></div>
+        <div class="bday-gifts" id="bday-gifts"></div>
+        <div class="bday-message" id="bday-message"></div>
+        <button class="btn bday-thanks-btn" id="bday-thanks" style="display:none;">Thank you!! 💕</button>
+      </div>
+
+      <!-- Phone on side table -->
+      <div class="lr-phone" id="lr-phone">
+        <div class="lr-phone-screen"></div>
+        <div class="lr-phone-btn"></div>
+      </div>
+
+      <!-- Phone popup (3 apps) -->
+      <div class="phone-popup" id="phone-popup" style="display:none;">
+        <div class="phone-frame">
+          <div class="phone-header">
+            <span class="phone-time" id="phone-time">12:00</span>
+            <span class="phone-battery">🔋</span>
+          </div>
+          <div class="phone-apps" id="phone-apps">
+            <button class="phone-app" id="phone-app-dress">
+              <span class="phone-app-icon">👗</span>
+              <span class="phone-app-label">Closet</span>
+            </button>
+            <button class="phone-app" id="phone-app-game">
+              <span class="phone-app-icon">🎮</span>
+              <span class="phone-app-label">Games</span>
+            </button>
+            <button class="phone-app" id="phone-app-text">
+              <span class="phone-app-icon">💬</span>
+              <span class="phone-app-label">Texts</span>
+            </button>
+          </div>
+          <button class="phone-home-btn" id="phone-home-btn">⬤</button>
+        </div>
+      </div>
+
+      <!-- Phone: Closet app (free dress up) -->
+      <div class="phone-popup" id="phone-closet" style="display:none;">
+        <div class="phone-frame">
+          <div class="phone-header">
+            <span class="phone-app-title">👗 Closet</span>
+            <button class="phone-back-btn" id="closet-back">✕</button>
+          </div>
+          <div class="phone-closet-grid" id="phone-closet-grid"></div>
+          <button class="phone-home-btn" id="closet-home">⬤</button>
+        </div>
+      </div>
+
+      <!-- Phone: Game app -->
+      <div class="phone-popup" id="phone-game" style="display:none;">
+        <div class="phone-frame">
+          <div class="phone-header">
+            <span class="phone-app-title">🎮 Catch Stars</span>
+            <button class="phone-back-btn" id="game-back">✕</button>
+          </div>
+          <div class="phone-game-area" id="phone-game-area">
+            <div class="phone-game-score">Score: <span id="phone-game-score">0</span></div>
+            <div class="phone-game-field" id="phone-game-field"></div>
+            <div class="phone-game-start" id="phone-game-start">Tap ⭐ to start!</div>
+          </div>
+          <button class="phone-home-btn" id="game-home">⬤</button>
+        </div>
+      </div>
+
+      <!-- Phone: Texting app -->
+      <div class="phone-popup" id="phone-texts" style="display:none;">
+        <div class="phone-frame">
+          <div class="phone-header">
+            <span class="phone-app-title">💬 Messages</span>
+            <button class="phone-back-btn" id="texts-back">✕</button>
+          </div>
+          <div class="phone-contacts" id="phone-contacts"></div>
+          <div class="phone-chat" id="phone-chat" style="display:none;">
+            <div class="phone-chat-header" id="phone-chat-header"></div>
+            <div class="phone-chat-messages" id="phone-chat-messages"></div>
+            <div class="phone-chat-input">
+              <div class="phone-chat-options" id="phone-chat-options"></div>
+            </div>
+          </div>
+          <button class="phone-home-btn" id="texts-home">⬤</button>
+        </div>
+      </div>
+
       <!-- Speech Bubble -->
       <div class="speech-bubble" id="speech-bubble">
         <span id="speech-text">Hi hi! I'm your tiny buddy!</span>
@@ -124,6 +323,38 @@
       <button class="btn btn-action btn-sleep" id="btn-sleep" data-key="6">
         <span class="btn-icon">😴</span><span class="btn-label">Sleep<br><small>(6)</small></span>
       </button>
+      <button class="btn btn-action btn-nails" id="btn-nails" data-key="7">
+        <span class="btn-icon">💅</span><span class="btn-label">Nails<br><small>(7)</small></span>
+      </button>
+      <button class="btn btn-action btn-clean" id="btn-clean" data-key="8">
+        <span class="btn-icon">🧹</span><span class="btn-label">Clean<br><small>(8)</small></span>
+      </button>
+      <button class="btn btn-action btn-dress" id="btn-dress" data-key="9">
+        <span class="btn-icon">👗</span><span class="btn-label">Dress<br><small>(9)</small></span>
+      </button>
+      <button class="btn btn-action btn-cook" id="btn-cook" data-key="0">
+        <span class="btn-icon">🧁</span><span class="btn-label">Cook<br><small>(0)</small></span>
+      </button>
+      <button class="btn btn-action btn-makeup" id="btn-makeup">
+        <span class="btn-icon">💄</span><span class="btn-label">Makeup</span>
+      </button>
+      <button class="btn btn-action btn-garden" id="btn-garden">
+        <span class="btn-icon">🌱</span><span class="btn-label">Garden</span>
+      </button>
+      <button class="btn btn-action btn-photo" id="btn-photo">
+        <span class="btn-icon">📸</span><span class="btn-label">Photo</span>
+      </button>
+    </div>
+
+    <!-- Cleaning Mode Bar (shown during cleaning) -->
+    <div class="clean-mode-bar hidden" id="clean-mode-bar">
+      <h2 class="clean-mode-title">🧹 Tidy Up!</h2>
+      <p class="clean-mode-hint">Tap the mess on the floor to clean up!</p>
+      <div class="clean-meter-bg">
+        <div class="clean-meter-fill" id="clean-meter"></div>
+      </div>
+      <p class="clean-mode-count">Cleaned: <span id="clean-count">0</span></p>
+      <button class="btn btn-close-overlay" id="clean-done">✅ Done</button>
     </div>
 
     <!-- Bottom Bar -->
@@ -247,11 +478,18 @@
       <!-- Particles -->
       <div id="park-particles" class="particles-container"></div>
     </div>
-    <!-- Play mini-game area at bottom -->
+    <!-- Trick mini-game area at bottom -->
     <div class="park-bottom-bar">
-      <h2 id="play-title" class="park-title">Catch the Ball! 🎾</h2>
-      <p>Clicks: <span id="play-clicks">0</span> / 5</p>
-      <div class="play-area" id="play-area"></div>
+      <h2 id="play-title" class="park-title">Trick Time! 🎪</h2>
+      <p class="trick-prompt" id="trick-prompt">Get ready...</p>
+      <p class="trick-score">Tricks: <span id="play-clicks">0</span> / 5</p>
+      <div class="trick-buttons" id="trick-buttons">
+        <button class="btn btn-trick" data-trick="sit">🐾<br><small>Sit</small></button>
+        <button class="btn btn-trick" data-trick="jump">⬆️<br><small>Jump</small></button>
+        <button class="btn btn-trick" data-trick="spin">🌀<br><small>Spin</small></button>
+        <button class="btn btn-trick" data-trick="shake">🤝<br><small>Shake</small></button>
+      </div>
+      <div class="trick-result" id="trick-result"></div>
       <button class="btn btn-close-overlay" id="park-back" style="display:none;">⬅ Back to Home</button>
     </div>
   </div>
@@ -648,6 +886,353 @@
     </div>
   </div>
 
+  <!-- ============ NAIL SALON SCENE ============ -->
+  <div id="nail-scene" class="screen">
+    <div class="nail-salon">
+      <!-- Wall -->
+      <div class="ns-wall">
+        <!-- Neon sign -->
+        <div class="ns-neon-sign">💅 Paw Salon</div>
+        <!-- Decorative wall shelves with polish -->
+        <div class="ns-shelf ns-shelf-l">
+          <div class="ns-polish-bottle" style="--pc:#ff6b8a;"></div>
+          <div class="ns-polish-bottle" style="--pc:#a78bfa;"></div>
+          <div class="ns-polish-bottle" style="--pc:#60d394;"></div>
+        </div>
+        <div class="ns-shelf ns-shelf-r">
+          <div class="ns-polish-bottle" style="--pc:#fbbf24;"></div>
+          <div class="ns-polish-bottle" style="--pc:#38bdf8;"></div>
+          <div class="ns-polish-bottle" style="--pc:#f472b6;"></div>
+        </div>
+      </div>
+      <!-- Floor -->
+      <div class="ns-floor"></div>
+      <!-- Salon table -->
+      <div class="ns-table">
+        <div class="ns-table-top"></div>
+        <div class="ns-table-leg ns-tl-l"></div>
+        <div class="ns-table-leg ns-tl-r"></div>
+        <!-- Cushion on table -->
+        <div class="ns-cushion"></div>
+      </div>
+      <!-- The 4 paws to paint (positioned on the cushion) -->
+      <div class="ns-paws-area" id="ns-paws-area">
+        <div class="ns-paw" data-paw="0" id="ns-paw-0">
+          <div class="ns-paw-pad"></div>
+          <div class="ns-paw-toe ns-toe-1"></div>
+          <div class="ns-paw-toe ns-toe-2"></div>
+          <div class="ns-paw-toe ns-toe-3"></div>
+          <div class="ns-nail" id="ns-nail-0"></div>
+          <div class="ns-nail" id="ns-nail-0b"></div>
+          <div class="ns-nail" id="ns-nail-0c"></div>
+        </div>
+        <div class="ns-paw" data-paw="1" id="ns-paw-1">
+          <div class="ns-paw-pad"></div>
+          <div class="ns-paw-toe ns-toe-1"></div>
+          <div class="ns-paw-toe ns-toe-2"></div>
+          <div class="ns-paw-toe ns-toe-3"></div>
+          <div class="ns-nail" id="ns-nail-1"></div>
+          <div class="ns-nail" id="ns-nail-1b"></div>
+          <div class="ns-nail" id="ns-nail-1c"></div>
+        </div>
+        <div class="ns-paw" data-paw="2" id="ns-paw-2">
+          <div class="ns-paw-pad"></div>
+          <div class="ns-paw-toe ns-toe-1"></div>
+          <div class="ns-paw-toe ns-toe-2"></div>
+          <div class="ns-paw-toe ns-toe-3"></div>
+          <div class="ns-nail" id="ns-nail-2"></div>
+          <div class="ns-nail" id="ns-nail-2b"></div>
+          <div class="ns-nail" id="ns-nail-2c"></div>
+        </div>
+        <div class="ns-paw" data-paw="3" id="ns-paw-3">
+          <div class="ns-paw-pad"></div>
+          <div class="ns-paw-toe ns-toe-1"></div>
+          <div class="ns-paw-toe ns-toe-2"></div>
+          <div class="ns-paw-toe ns-toe-3"></div>
+          <div class="ns-nail" id="ns-nail-3"></div>
+          <div class="ns-nail" id="ns-nail-3b"></div>
+          <div class="ns-nail" id="ns-nail-3c"></div>
+        </div>
+      </div>
+      <!-- Pet peeking above table -->
+      <div class="ns-pet-spot">
+        <div id="nail-pet-container" class="pet-container"></div>
+      </div>
+      <!-- Speech bubble -->
+      <div class="ns-speech-bubble" id="ns-speech">
+        <span id="ns-speech-text">Pretty nails!</span>
+      </div>
+      <!-- Sparkle particles -->
+      <div id="ns-particles" class="particles-container"></div>
+    </div>
+
+    <!-- Bottom bar: color picker + controls -->
+    <div class="ns-bottom-bar">
+      <h2 class="ns-title">💅 Paint My Paws!</h2>
+      <p class="ns-hint">Pick a color, then tap each paw to paint!</p>
+      <div class="ns-color-picker" id="ns-color-picker">
+        <button class="ns-color-btn ns-color-active" data-color="#ff6b8a" style="background:#ff6b8a;" title="Pink"></button>
+        <button class="ns-color-btn" data-color="#e53e3e" style="background:#e53e3e;" title="Red"></button>
+        <button class="ns-color-btn" data-color="#f6ad55" style="background:#f6ad55;" title="Orange"></button>
+        <button class="ns-color-btn" data-color="#fbbf24" style="background:#fbbf24;" title="Yellow"></button>
+        <button class="ns-color-btn" data-color="#68d391" style="background:#68d391;" title="Green"></button>
+        <button class="ns-color-btn" data-color="#38bdf8" style="background:#38bdf8;" title="Blue"></button>
+        <button class="ns-color-btn" data-color="#a78bfa" style="background:#a78bfa;" title="Purple"></button>
+        <button class="ns-color-btn" data-color="#f472b6" style="background:#f472b6;" title="Hot Pink"></button>
+        <button class="ns-color-btn" data-color="#fff" style="background:#fff; border:2px solid #ccc;" title="White"></button>
+        <button class="ns-color-btn ns-color-sparkle" data-color="sparkle" style="background:linear-gradient(135deg,#fbbf24,#f472b6,#a78bfa,#38bdf8);" title="Rainbow Sparkle ✨"></button>
+      </div>
+      <p class="ns-paws-done">Paws painted: <span id="ns-paws-count">0</span> / 4</p>
+      <button class="btn btn-close-overlay" id="nail-back" style="display:none;">⬅ Back</button>
+    </div>
+  </div>
+
+  <!-- ============ MAKEUP VANITY SCENE ============ -->
+  <div id="makeup-scene" class="screen">
+    <div class="makeup-vanity">
+      <!-- Vanity background -->
+      <div class="mv-wall"></div>
+      <div class="mv-mirror">
+        <div class="mv-mirror-lights">
+          <span class="mv-bulb"></span><span class="mv-bulb"></span><span class="mv-bulb"></span>
+          <span class="mv-bulb"></span><span class="mv-bulb"></span>
+        </div>
+        <div class="mv-mirror-glass">
+          <div class="mv-pet-preview" id="mv-pet-preview"></div>
+          <div class="mv-makeup-overlay" id="mv-makeup-overlay"></div>
+        </div>
+      </div>
+      <div class="mv-table">
+        <div class="mv-items-display">
+          <span class="mv-item-deco">💄</span>
+          <span class="mv-item-deco">🪞</span>
+          <span class="mv-item-deco">✨</span>
+          <span class="mv-item-deco">🌸</span>
+        </div>
+      </div>
+      <!-- Speech -->
+      <div class="mv-speech" id="mv-speech">
+        <span id="mv-speech-text">Glam time!</span>
+      </div>
+    </div>
+    <!-- Makeup controls -->
+    <div class="mv-controls">
+      <h2 class="mv-title">💄 Makeup Vanity</h2>
+      <div class="mv-categories" id="mv-categories">
+        <button class="mv-cat-btn active" data-cat="blush">🩷 Blush</button>
+        <button class="mv-cat-btn" data-cat="lipstick">💋 Lips</button>
+        <button class="mv-cat-btn" data-cat="eyeshadow">👁️ Shadow</button>
+        <button class="mv-cat-btn" data-cat="eyeliner">✏️ Liner</button>
+        <button class="mv-cat-btn" data-cat="lashes">🦋 Lashes</button>
+        <button class="mv-cat-btn" data-cat="sparkle">✨ Glitter</button>
+      </div>
+      <div class="mv-palette" id="mv-palette"></div>
+      <div class="mv-current" id="mv-current">No makeup yet — tap a color!</div>
+      <div class="mv-actions">
+        <button class="btn btn-small mv-clear-btn" id="mv-clear">🧽 Remove All</button>
+        <button class="btn btn-close-overlay" id="makeup-back">⬅ Done</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ DRESS UP / WARDROBE SCENE ============ -->
+  <div id="dress-scene" class="screen">
+    <div class="wardrobe-room">
+      <!-- Wall -->
+      <div class="wr-wall"></div>
+      <!-- Floor -->
+      <div class="wr-floor"></div>
+      <!-- Big mirror -->
+      <div class="wr-mirror">
+        <div class="wr-mirror-frame"></div>
+        <div class="wr-mirror-shine"></div>
+        <!-- Pet reflection in mirror -->
+        <div class="wr-mirror-pet">
+          <div id="dress-mirror-pet" class="pet-container"></div>
+        </div>
+      </div>
+      <!-- Clothing rack -->
+      <div class="wr-rack">
+        <div class="wr-rack-bar"></div>
+        <div class="wr-rack-leg wr-rl-l"></div>
+        <div class="wr-rack-leg wr-rl-r"></div>
+        <div class="wr-hanger wr-h1">👒</div>
+        <div class="wr-hanger wr-h2">🧣</div>
+        <div class="wr-hanger wr-h3">🎀</div>
+      </div>
+      <!-- Pet standing for dress-up -->
+      <div class="wr-pet-spot">
+        <div id="dress-pet-container" class="pet-container"></div>
+        <div id="dress-accessory-overlay" class="accessory-overlay"></div>
+      </div>
+      <!-- Speech bubble -->
+      <div class="wr-speech-bubble" id="wr-speech">
+        <span id="wr-speech-text">Dress me up!</span>
+      </div>
+      <div id="wr-particles" class="particles-container"></div>
+    </div>
+
+    <!-- Bottom bar: outfit picker -->
+    <div class="wr-bottom-bar">
+      <h2 class="wr-title">👗 Wardrobe</h2>
+      <p class="wr-hint">Tap an outfit to try it on! (costs ❤️ hearts)</p>
+      <div class="wr-items-scroll" id="wr-items-grid"></div>
+      <div class="wr-hearts-display">❤️ <span id="wr-hearts">0</span></div>
+      <button class="btn btn-close-overlay" id="dress-back">⬅ Back</button>
+    </div>
+  </div>
+
+  <!-- ============ COOKING / KITCHEN SCENE ============ -->
+  <div id="cook-scene" class="screen">
+    <div class="kitchen">
+      <!-- Wall -->
+      <div class="kt-wall">
+        <div class="kt-cabinet kt-cab-l"></div>
+        <div class="kt-cabinet kt-cab-r"></div>
+        <div class="kt-window">
+          <div class="kt-window-sky"></div>
+        </div>
+      </div>
+      <!-- Floor -->
+      <div class="kt-floor"></div>
+      <!-- Counter -->
+      <div class="kt-counter">
+        <div class="kt-counter-top"></div>
+        <div class="kt-counter-front"></div>
+      </div>
+      <!-- Mixing bowl -->
+      <div class="kt-bowl" id="kt-bowl">
+        <div class="kt-bowl-inner" id="kt-bowl-inner"></div>
+        <div class="kt-bowl-mix" id="kt-bowl-mix"></div>
+      </div>
+      <!-- Oven -->
+      <div class="kt-oven" id="kt-oven">
+        <div class="kt-oven-door">
+          <div class="kt-oven-window"></div>
+        </div>
+        <div class="kt-oven-handle"></div>
+      </div>
+      <!-- Result plate -->
+      <div class="kt-result-plate" id="kt-result-plate">
+        <div class="kt-plate-inner"></div>
+        <span class="kt-result-food" id="kt-result-food"></span>
+      </div>
+      <!-- Pet watching from side -->
+      <div class="kt-pet-spot">
+        <div id="cook-pet-container" class="pet-container"></div>
+      </div>
+      <!-- Speech bubble -->
+      <div class="kt-speech-bubble" id="kt-speech">
+        <span id="kt-speech-text">Let's bake!</span>
+      </div>
+      <div id="kt-particles" class="particles-container"></div>
+    </div>
+
+    <!-- Bottom bar: ingredients + controls -->
+    <div class="kt-bottom-bar">
+      <h2 class="kt-title" id="kt-title">🧁 Let's Cook!</h2>
+      <p class="kt-hint" id="kt-hint">Tap ingredients to add them to the bowl!</p>
+      <div class="kt-ingredients" id="kt-ingredients">
+        <button class="btn kt-ingr" data-ingr="flour">🌾<br><small>Flour</small></button>
+        <button class="btn kt-ingr" data-ingr="egg">🥚<br><small>Egg</small></button>
+        <button class="btn kt-ingr" data-ingr="sugar">🍬<br><small>Sugar</small></button>
+        <button class="btn kt-ingr" data-ingr="butter">🧈<br><small>Butter</small></button>
+        <button class="btn kt-ingr" data-ingr="chocolate">🍫<br><small>Cocoa</small></button>
+        <button class="btn kt-ingr" data-ingr="fruit">🍓<br><small>Fruit</small></button>
+      </div>
+      <div class="kt-actions" id="kt-actions" style="display:none;">
+        <button class="btn btn-mix" id="btn-mix">🥄 Mix!</button>
+        <button class="btn btn-bake" id="btn-bake" style="display:none;">🔥 Bake!</button>
+      </div>
+      <p class="kt-status" id="kt-status"></p>
+      <button class="btn btn-close-overlay" id="cook-back" style="display:none;">⬅ Back</button>
+    </div>
+  </div>
+
+  <!-- ============ GARDEN SCENE ============ -->
+  <div id="garden-scene" class="screen">
+    <div class="garden">
+      <div class="gd-sky">
+        <div class="cloud cloud-g1"></div>
+        <div class="cloud cloud-g2"></div>
+        <div class="gd-sun">☀️</div>
+      </div>
+      <div class="gd-fence"></div>
+      <div class="gd-ground"></div>
+      <!-- 4 planting plots -->
+      <div class="gd-plots">
+        <div class="gd-plot" data-plot="0" id="gd-plot-0"><div class="gd-soil"></div><div class="gd-plant-stage" id="gd-plant-0"></div></div>
+        <div class="gd-plot" data-plot="1" id="gd-plot-1"><div class="gd-soil"></div><div class="gd-plant-stage" id="gd-plant-1"></div></div>
+        <div class="gd-plot" data-plot="2" id="gd-plot-2"><div class="gd-soil"></div><div class="gd-plant-stage" id="gd-plant-2"></div></div>
+        <div class="gd-plot" data-plot="3" id="gd-plot-3"><div class="gd-soil"></div><div class="gd-plant-stage" id="gd-plant-3"></div></div>
+      </div>
+      <div class="gd-pet-spot">
+        <div id="garden-pet-container" class="pet-container"></div>
+      </div>
+      <div class="gd-speech-bubble" id="gd-speech">
+        <span id="gd-speech-text">Let's garden!</span>
+      </div>
+      <div id="gd-particles" class="particles-container"></div>
+    </div>
+    <div class="gd-bottom-bar">
+      <h2 class="gd-title">🌱 My Garden</h2>
+      <p class="gd-hint" id="gd-hint">Tap a plot to plant, water, or harvest!</p>
+      <div class="gd-actions">
+        <button class="btn gd-act-btn" id="gd-btn-plant" data-act="plant">🌱 Plant</button>
+        <button class="btn gd-act-btn" id="gd-btn-water" data-act="water">💧 Water</button>
+        <button class="btn gd-act-btn" id="gd-btn-harvest" data-act="harvest">🧺 Harvest</button>
+      </div>
+      <button class="btn btn-close-overlay" id="garden-back">⬅ Back</button>
+    </div>
+  </div>
+
+  <!-- ============ PHOTO BOOTH SCENE ============ -->
+  <div id="photo-scene" class="screen">
+    <div class="photo-booth">
+      <div class="pb-backdrop" id="pb-backdrop"></div>
+      <div class="pb-stage">
+        <div class="pb-pet-spot">
+          <div id="photo-pet-container" class="pet-container"></div>
+          <div id="photo-accessory-overlay" class="accessory-overlay"></div>
+        </div>
+        <div class="pb-prop" id="pb-prop"></div>
+      </div>
+      <div class="pb-frame" id="pb-frame">
+        <div class="pb-flash" id="pb-flash"></div>
+      </div>
+      <div id="pb-particles" class="particles-container"></div>
+    </div>
+    <div class="pb-bottom-bar">
+      <h2 class="pb-title">📸 Photo Booth!</h2>
+      <div class="pb-options">
+        <div class="pb-option-group">
+          <span class="pb-opt-label">Background:</span>
+          <div class="pb-bg-btns" id="pb-bg-btns">
+            <button class="pb-bg-btn pb-bg-active" data-bg="stars">⭐</button>
+            <button class="pb-bg-btn" data-bg="hearts">💕</button>
+            <button class="pb-bg-btn" data-bg="rainbow">🌈</button>
+            <button class="pb-bg-btn" data-bg="beach">🏖️</button>
+            <button class="pb-bg-btn" data-bg="space">🚀</button>
+          </div>
+        </div>
+        <div class="pb-option-group">
+          <span class="pb-opt-label">Prop:</span>
+          <div class="pb-prop-btns" id="pb-prop-btns">
+            <button class="pb-prop-btn" data-prop="none">❌</button>
+            <button class="pb-prop-btn pb-prop-active" data-prop="crown">👑</button>
+            <button class="pb-prop-btn" data-prop="star">⭐</button>
+            <button class="pb-prop-btn" data-prop="flower">🌸</button>
+            <button class="pb-prop-btn" data-prop="heart">💖</button>
+            <button class="pb-prop-btn" data-prop="sparkle">✨</button>
+          </div>
+        </div>
+      </div>
+      <button class="btn btn-snap" id="btn-snap">📸 Snap!</button>
+      <div class="pb-gallery-row" id="pb-gallery"></div>
+      <button class="btn btn-close-overlay" id="photo-back">⬅ Back</button>
+    </div>
+  </div>
+
   <!-- ============ EVENT VISUAL OVERLAY (shows items from events on the pet) ============ -->
   <div id="event-visual" class="event-visual hidden"></div>
 
@@ -660,6 +1245,102 @@
       <div class="accessory-grid" id="accessory-grid"></div>
       <button class="btn btn-close-overlay" id="sticker-close">✖ Close</button>
     </div>
+  </div>
+
+  <!-- ============ PARTY SCENE ============ -->
+  <div id="party-scene" class="screen">
+    <div class="party-room" id="party-room">
+      <!-- Decorations layer -->
+      <div class="party-decos" id="party-decos"></div>
+      <!-- Dance floor with lights -->
+      <div class="party-floor"></div>
+      <div class="party-disco-lights" id="party-disco-lights"></div>
+      <!-- Guests area (clickable!) -->
+      <div class="party-guests" id="party-guests"></div>
+      <!-- Your pet (clickable to dance!) -->
+      <div class="party-host" id="party-host"></div>
+      <!-- Big party snack table -->
+      <div class="party-table" id="party-table">
+        <div class="party-tablecloth"></div>
+        <div class="party-snacks" id="party-snacks">
+          <span class="party-snack">🎂</span>
+          <span class="party-snack">🍕</span>
+          <span class="party-snack">🧁</span>
+          <span class="party-snack">🍩</span>
+          <span class="party-snack">🍪</span>
+          <span class="party-snack">🥤</span>
+          <span class="party-snack">🍬</span>
+        </div>
+      </div>
+      <!-- Gift pile -->
+      <div class="party-gifts" id="party-gifts"></div>
+      <!-- Music notes floating -->
+      <div class="party-music" id="party-music"></div>
+      <!-- Reaction emojis that pop up -->
+      <div class="party-reactions" id="party-reactions"></div>
+    </div>
+
+    <!-- Theme picker (shown first) -->
+    <div class="party-picker" id="party-picker">
+      <h2 class="party-title">🎉 Party Planner!</h2>
+      <p class="party-subtitle">Pick a theme for your party</p>
+      <div class="party-themes">
+        <button class="btn-party-theme" data-theme="birthday">🎂<span>Birthday</span></button>
+        <button class="btn-party-theme" data-theme="dance">💃<span>Dance Party</span></button>
+        <button class="btn-party-theme" data-theme="tea">🫖<span>Tea Party</span></button>
+        <button class="btn-party-theme" data-theme="pool">🏖️<span>Pool Party</span></button>
+      </div>
+    </div>
+
+    <!-- Party outfit picker (shown after theme) -->
+    <div class="party-picker party-outfit-picker" id="party-outfit-picker" style="display:none;">
+      <h2 class="party-title">👗 What to Wear?</h2>
+      <p class="party-subtitle">Pick an outfit for the party!</p>
+      <div class="party-outfit-grid" id="party-outfit-grid"></div>
+      <button class="btn btn-big btn-green party-go-btn" id="party-go-btn">Let's Party! 🎉</button>
+    </div>
+
+    <!-- Party vibe meter -->
+    <div class="party-vibe" id="party-vibe" style="display:none;">
+      <div class="party-vibe-label">🔥 Party Vibe</div>
+      <div class="party-vibe-track">
+        <div class="party-vibe-fill" id="party-vibe-fill"></div>
+      </div>
+      <div class="party-vibe-level" id="party-vibe-level">Warming up...</div>
+    </div>
+
+    <!-- Party action buttons -->
+    <div class="party-actions" id="party-actions" style="display:none;">
+      <button class="btn-party-act" id="btn-party-dance" data-act="dance">
+        <span class="pa-icon">💃</span><span class="pa-label">Dance!</span>
+      </button>
+      <button class="btn-party-act" id="btn-party-treat" data-act="treat">
+        <span class="pa-icon">🍰</span><span class="pa-label">Treats</span>
+      </button>
+      <button class="btn-party-act" id="btn-party-confetti" data-act="confetti">
+        <span class="pa-icon">🎊</span><span class="pa-label">Confetti</span>
+      </button>
+      <button class="btn-party-act" id="btn-party-gift" data-act="gift">
+        <span class="pa-icon">🎁</span><span class="pa-label">Gifts</span>
+      </button>
+      <button class="btn-party-act" id="btn-party-music" data-act="music">
+        <span class="pa-icon">🎵</span><span class="pa-label">Music</span>
+      </button>
+    </div>
+
+    <!-- Party status -->
+    <div class="party-status" id="party-status" style="display:none;">
+      <div class="party-status-theme" id="party-status-theme"></div>
+      <div class="party-status-guests" id="party-status-guests">Guests: 0</div>
+    </div>
+
+    <!-- Gift opening popup -->
+    <div class="party-gift-popup" id="party-gift-popup" style="display:none;">
+      <div class="gift-box-anim" id="gift-box-anim">🎁</div>
+      <div class="gift-reveal" id="gift-reveal"></div>
+    </div>
+
+    <button class="btn btn-back" id="btn-party-back">🔙 End Party</button>
   </div>
 
   <!-- Confetti container -->

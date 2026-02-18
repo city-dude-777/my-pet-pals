@@ -279,31 +279,33 @@ html, body {
   transform: rotate(-15deg);
 }
 
-/* ===================== HAMSTER MINI ===================== */
-.hamster-mini {
+/* ===================== AXOLOTL MINI ===================== */
+.axolotl-mini {
   width: 62px; height: 56px;
-  background: #ffe0b2;
+  background: #ffc1e3;
   border: 3px solid var(--outline);
   border-radius: 50%;
   position: relative;
 }
-.hamster-mini::before {
+.axolotl-mini::before {
   content: '';
   position: absolute;
-  width: 16px; height: 14px;
-  background: #ffe0b2;
-  border: 3px solid var(--outline);
-  border-radius: 50%;
-  top: -8px; left: 6px;
+  width: 18px; height: 22px;
+  background: #ff8ec4;
+  border: 2px solid var(--outline);
+  border-radius: 50% 50% 30% 30%;
+  top: -12px; left: 2px;
+  transform: rotate(-15deg);
 }
-.hamster-mini::after {
+.axolotl-mini::after {
   content: '';
   position: absolute;
-  width: 16px; height: 14px;
-  background: #ffe0b2;
-  border: 3px solid var(--outline);
-  border-radius: 50%;
-  top: -8px; right: 6px;
+  width: 18px; height: 22px;
+  background: #ff8ec4;
+  border: 2px solid var(--outline);
+  border-radius: 50% 50% 30% 30%;
+  top: -12px; right: 2px;
+  transform: rotate(15deg);
 }
 
 /* ---------- TOP BAR ---------- */
@@ -1212,109 +1214,91 @@ html, body {
   100%{ transform: rotate(-5deg) translateY(-4px); }
 }
 
-/* ===================== HAMSTER specifics ===================== */
-.chibi-pet.hamster .chibi-body { background: #ffe0b2; border-radius: 50%; }
-.chibi-pet.hamster .chibi-belly { background: #fff3e0; width: 55%; height: 50%; }
-.chibi-pet.hamster .chibi-leg { background: #ffe0b2; width: 16px; height: 14px; border-radius: 50%; }
-.chibi-pet.hamster .chibi-legs { gap: 18px; }
-.chibi-pet.hamster .chibi-eyes { top: 22px; gap: 24px; }
-.chibi-pet.hamster .chibi-eye { width: 16px; height: 18px; }
-.chibi-pet.hamster .chibi-blush-l { top: 42px; left: 8px; width: 16px; height: 10px; }
-.chibi-pet.hamster .chibi-blush-r { top: 42px; right: 8px; width: 16px; height: 10px; }
-
-/* Hamster nose (tiny pink dot) */
-.chibi-pet.hamster .chibi-nose {
-  width: 8px; height: 6px;
-  background: #f48fb1;
-  border-radius: 50%;
-  position: absolute; top: 40px; left: 50%; transform: translateX(-50%);
+/* ===================== AXOLOTL specifics ===================== */
+.chibi-pet.axolotl .chibi-body {
+  background: #ffc1e3; border-radius: 55% 55% 48% 48%;
 }
+.chibi-pet.axolotl .chibi-belly { background: #ffe4f2; width: 60%; height: 50%; }
+.chibi-pet.axolotl .chibi-leg { background: #ffc1e3; width: 16px; height: 14px; border-radius: 50%; }
+.chibi-pet.axolotl .chibi-legs { gap: 20px; }
+.chibi-pet.axolotl .chibi-eyes { top: 24px; gap: 28px; }
+.chibi-pet.axolotl .chibi-eye { width: 20px; height: 22px; }
+.chibi-pet.axolotl .chibi-blush-l { top: 48px; left: 10px; width: 14px; height: 10px; background: rgba(255,140,180,.5); }
+.chibi-pet.axolotl .chibi-blush-r { top: 48px; right: 10px; width: 14px; height: 10px; background: rgba(255,140,180,.5); }
+.chibi-pet.axolotl .chibi-nose { display: none; }
 
-/* Hamster mouth */
-.chibi-pet.hamster .chibi-mouth {
-  position: absolute; top: 46px; left: 50%; transform: translateX(-50%);
-  width: 14px; height: 5px;
-  border-bottom: 2.5px solid #c9886a;
+/* Axolotl permanent smile */
+.chibi-pet.axolotl .chibi-mouth {
+  position: absolute; top: 56px; left: 50%; transform: translateX(-50%);
+  width: 20px; height: 8px;
+  border-bottom: 3px solid #d4618c;
   border-radius: 0 0 50% 50%;
+  border-left: 1.5px solid transparent; border-right: 1.5px solid transparent;
 }
 
-/* Hamster cheek pouches */
-.hamster-cheek-l, .hamster-cheek-r {
-  position: absolute;
-  width: 22px; height: 20px;
-  background: #ffcc80;
+/* Axolotl gills (branch-like frills) */
+.axo-gill-l, .axo-gill-r {
+  position: absolute; top: -4px; z-index: -1;
+}
+.axo-gill-l { left: -2px; }
+.axo-gill-r { right: -2px; }
+
+.axo-gill-l::before, .axo-gill-l::after,
+.axo-gill-r::before, .axo-gill-r::after {
+  content: ''; position: absolute;
+  background: #ff8ec4; border: 2px solid var(--outline);
+}
+
+.axo-gill-l::before {
+  width: 8px; height: 26px; border-radius: 50%; top: 0; left: -4px; transform: rotate(25deg);
+}
+.axo-gill-l::after {
+  width: 6px; height: 20px; border-radius: 50%; top: -6px; left: 4px; transform: rotate(50deg);
+  background: #ff6fb0;
+}
+.axo-gill-r::before {
+  width: 8px; height: 26px; border-radius: 50%; top: 0; right: -4px; transform: rotate(-25deg);
+}
+.axo-gill-r::after {
+  width: 6px; height: 20px; border-radius: 50%; top: -6px; right: 4px; transform: rotate(-50deg);
+  background: #ff6fb0;
+}
+
+/* Axolotl tail (fin-like) */
+.axo-tail {
+  position: absolute; bottom: 18px; right: -12px;
+  width: 16px; height: 24px;
+  background: #ffc1e3;
   border: 2.5px solid var(--outline);
-  border-radius: 50%;
-  top: 34px; z-index: 0;
-}
-.hamster-cheek-l { left: -6px; }
-.hamster-cheek-r { right: -6px; }
-
-/* Hamster cheeks puff animation */
-.chibi-pet.hamster .hamster-cheek-l,
-.chibi-pet.hamster .hamster-cheek-r {
-  animation: cheekPuff 3s ease-in-out infinite;
-}
-.chibi-pet.hamster .hamster-cheek-r { animation-delay: .3s; }
-@keyframes cheekPuff {
-  0%, 100% { transform: scale(1); }
-  50% { transform: scale(1.1); }
-}
-
-/* Hamster ears */
-.hamster-ear-l, .hamster-ear-r {
-  position: absolute;
-  width: 20px; height: 18px;
-  background: #ffe0b2;
-  border: 3px solid var(--outline);
-  border-radius: 50%;
-  top: -8px;
+  border-radius: 0 60% 60% 0;
   z-index: -1;
-}
-.hamster-ear-l { left: 6px; }
-.hamster-ear-r { right: 6px; }
-
-/* Inner ear */
-.hamster-ear-inner-l, .hamster-ear-inner-r {
-  position: absolute;
-  width: 10px; height: 9px;
-  background: #f8bbd0;
-  border-radius: 50%;
-  top: -2px; z-index: -1;
-}
-.hamster-ear-inner-l { left: 12px; }
-.hamster-ear-inner-r { right: 12px; }
-
-/* Hamster tail (tiny stub) */
-.hamster-tail {
-  position: absolute; bottom: 20px; right: -6px;
-  width: 10px; height: 8px;
-  background: #ffe0b2;
-  border: 2.5px solid var(--outline);
-  border-radius: 50%;
-  z-index: -1;
+  transform: rotate(-10deg);
 }
 
-/* Hamster idle animation (tiny wiggles) */
-.chibi-pet.hamster { animation: hamsterIdle 1.8s ease-in-out infinite; }
-@keyframes hamsterIdle {
-  0%, 100% { transform: translateY(0) rotate(0deg); }
-  25% { transform: translateY(-3px) rotate(-2deg); }
-  75% { transform: translateY(-3px) rotate(2deg); }
+/* Axolotl freckles */
+.axo-freckles {
+  position: absolute; top: 35px; left: 50%; transform: translateX(-50%);
+  display: flex; gap: 8px; z-index: 5;
+}
+.axo-freckle {
+  width: 4px; height: 4px; border-radius: 50%; background: rgba(200,80,140,.35);
 }
 
-/* Hamster whiskers */
-.hamster-whiskers {
-  position: absolute; top: 40px; left: 50%; transform: translateX(-50%);
-  width: 70px; height: 20px; z-index: 1;
+/* Axolotl idle animation (gentle sway) */
+.chibi-pet.axolotl { animation: axolotlIdle 2.5s ease-in-out infinite; }
+@keyframes axolotlIdle {
+  0%, 100% { transform: translateX(-50%) translateY(0); }
+  30% { transform: translateX(-50%) translateY(-5px) rotate(-1deg); }
+  70% { transform: translateX(-50%) translateY(-5px) rotate(1deg); }
 }
-.hamster-whisker {
-  position: absolute; width: 14px; height: 1.5px; background: #c9886a;
+
+/* Axolotl gill sway */
+.axo-gill-l, .axo-gill-r { animation: gillSway 2s ease-in-out infinite; }
+.axo-gill-r { animation-delay: .4s; }
+@keyframes gillSway {
+  0%, 100% { transform: rotate(0deg); }
+  50% { transform: rotate(5deg); }
 }
-.hamster-whisker:nth-child(1) { top: 2px; left: 0; transform: rotate(-8deg); }
-.hamster-whisker:nth-child(2) { top: 7px; left: 2px; transform: rotate(5deg); }
-.hamster-whisker:nth-child(3) { top: 2px; right: 0; transform: rotate(8deg); }
-.hamster-whisker:nth-child(4) { top: 7px; right: 2px; transform: rotate(-5deg); }
 
 /* ===================== REACTIONS ===================== */
 /* Happy bounce */
@@ -1831,85 +1815,86 @@ html, body {
 }
 
 /* ── NEW CLOTHES (body outfits) ── */
+/* Outfits sit in front of the pet body with z-index: 2 and partial opacity so the pet peeks through */
 .outfit-dress {
   position: absolute; bottom: 14px; left: 50%; transform: translateX(-50%);
-  width: 64px; height: 62px;
+  width: 130px; height: 70px;
   background: linear-gradient(180deg, #f06292 0%, #ec407a 40%, #e91e63 100%);
   border: 2.5px solid #c2185b;
-  border-radius: 2px 2px 8px 8px;
-  z-index: -1;
-  clip-path: polygon(15% 0%, 85% 0%, 100% 100%, 0% 100%);
+  border-radius: 4px 4px 14px 14px;
+  z-index: 2;
+  clip-path: polygon(20% 0%, 80% 0%, 100% 100%, 0% 100%);
 }
 .outfit-dress::before {
   content: ''; position: absolute; top: 0; left: 50%; transform: translateX(-50%);
-  width: 38px; height: 3px; background: #ad1457;
+  width: 50px; height: 3px; background: #ad1457;
   border-radius: 2px;
 }
 .outfit-dress::after {
-  content: ''; position: absolute; top: 12px; left: 50%; transform: translateX(-50%);
-  width: 10px; height: 10px; background: #fff;
-  border-radius: 50%; opacity: .5;
+  content: ''; position: absolute; top: 14px; left: 50%; transform: translateX(-50%);
+  width: 12px; height: 12px; background: #fff;
+  border-radius: 50%; opacity: .45;
 }
 
 .outfit-fancy-dress {
   position: absolute; bottom: 10px; left: 50%; transform: translateX(-50%);
-  width: 70px; height: 68px;
+  width: 135px; height: 76px;
   background: linear-gradient(180deg, #9c27b0 0%, #7b1fa2 35%, #6a1b9a 100%);
   border: 2.5px solid #4a148c;
-  border-radius: 2px 2px 12px 12px;
-  z-index: -1;
-  clip-path: polygon(18% 0%, 82% 0%, 100% 85%, 90% 100%, 10% 100%, 0% 85%);
+  border-radius: 4px 4px 16px 16px;
+  z-index: 2;
+  clip-path: polygon(22% 0%, 78% 0%, 100% 80%, 92% 100%, 8% 100%, 0% 80%);
 }
 .outfit-fancy-dress::before {
   content: ''; position: absolute; top: 0; left: 50%; transform: translateX(-50%);
-  width: 28px; height: 4px; background: #e1bee7;
+  width: 34px; height: 4px; background: #e1bee7;
   border-radius: 2px;
 }
 .outfit-fancy-dress::after {
-  content: '✨'; position: absolute; top: 14px; left: 50%; transform: translateX(-50%);
-  font-size: .55rem;
+  content: '✨'; position: absolute; top: 16px; left: 50%; transform: translateX(-50%);
+  font-size: .6rem;
 }
 
 .outfit-tshirt {
   position: absolute; bottom: 38px; left: 50%; transform: translateX(-50%);
-  width: 72px; height: 40px;
-  background: #42a5f5; border: 3px solid #1976d2; border-radius: 6px;
-  z-index: -1;
+  width: 128px; height: 44px;
+  background: #42a5f5; border: 3px solid #1976d2; border-radius: 8px;
+  z-index: 2;
 }
 .outfit-tshirt::before {
-  content: '⭐'; position: absolute; top: 8px; left: 50%; transform: translateX(-50%); font-size: .8rem;
+  content: '⭐'; position: absolute; top: 8px; left: 50%; transform: translateX(-50%); font-size: .9rem;
 }
 .outfit-tshirt::after {
-  content: ''; position: absolute; top: 2px; left: -12px;
-  width: 14px; height: 16px; background: #42a5f5; border: 3px solid #1976d2;
+  content: ''; position: absolute; top: 2px; left: -14px;
+  width: 16px; height: 18px; background: #42a5f5; border: 3px solid #1976d2;
   border-radius: 50% 0 0 50%;
 }
 
 .outfit-red-tshirt {
   position: absolute; bottom: 38px; left: 50%; transform: translateX(-50%);
-  width: 72px; height: 40px;
-  background: #ef5350; border: 3px solid #c62828; border-radius: 6px;
-  z-index: -1;
+  width: 128px; height: 44px;
+  background: #ef5350; border: 3px solid #c62828; border-radius: 8px;
+  z-index: 2;
 }
 .outfit-red-tshirt::before {
-  content: '❤️'; position: absolute; top: 8px; left: 50%; transform: translateX(-50%); font-size: .7rem;
+  content: '❤️'; position: absolute; top: 8px; left: 50%; transform: translateX(-50%); font-size: .8rem;
 }
 .outfit-red-tshirt::after {
-  content: ''; position: absolute; top: 2px; right: -12px;
-  width: 14px; height: 16px; background: #ef5350; border: 3px solid #c62828;
+  content: ''; position: absolute; top: 2px; right: -14px;
+  width: 16px; height: 18px; background: #ef5350; border: 3px solid #c62828;
   border-radius: 0 50% 50% 0;
 }
 
 .outfit-sweater {
   position: absolute; bottom: 34px; left: 50%; transform: translateX(-50%);
-  width: 78px; height: 44px;
+  width: 132px; height: 48px;
   background: repeating-linear-gradient(0deg, #ff8a65 0px, #ff8a65 4px, #ffab91 4px, #ffab91 8px);
-  border: 3px solid #e64a19; border-radius: 6px 6px 4px 4px;
-  z-index: -1;
+  border: 3px solid #e64a19; border-radius: 8px 8px 4px 4px;
+  z-index: 2;
 }
 .outfit-sweater::before {
   content: ''; position: absolute; top: -6px; left: 50%; transform: translateX(-50%);
-  width: 30px; height: 10px; background: #ff8a65; border: 2px solid #e64a19;
+  width: 34px; height: 10px; background: #ff8a65; border: 2px solid #e64a19;
   border-radius: 50% 50% 0 0;
 }
 .outfit-sweater::after {
@@ -1920,52 +1905,52 @@ html, body {
 
 .outfit-cozy-sweater {
   position: absolute; bottom: 34px; left: 50%; transform: translateX(-50%);
-  width: 78px; height: 44px;
+  width: 132px; height: 48px;
   background: repeating-linear-gradient(0deg, #81c784 0px, #81c784 4px, #a5d6a7 4px, #a5d6a7 8px);
-  border: 3px solid #388e3c; border-radius: 6px 6px 4px 4px;
-  z-index: -1;
+  border: 3px solid #388e3c; border-radius: 8px 8px 4px 4px;
+  z-index: 2;
 }
 .outfit-cozy-sweater::before {
   content: ''; position: absolute; top: -6px; left: 50%; transform: translateX(-50%);
-  width: 30px; height: 10px; background: #81c784; border: 2px solid #388e3c;
+  width: 34px; height: 10px; background: #81c784; border: 2px solid #388e3c;
   border-radius: 50% 50% 0 0;
 }
 .outfit-cozy-sweater::after {
-  content: '🍀'; position: absolute; top: 6px; left: 50%; transform: translateX(-50%); font-size: .6rem;
+  content: '🍀'; position: absolute; top: 8px; left: 50%; transform: translateX(-50%); font-size: .7rem;
 }
 
 .outfit-pants {
   position: absolute; bottom: 14px; left: 50%; transform: translateX(-50%);
-  width: 56px; height: 26px;
+  width: 100px; height: 30px;
   background: #5c6bc0; border: 3px solid #283593; border-radius: 4px;
-  z-index: -1;
+  z-index: 2;
 }
 .outfit-pants::before {
-  content: ''; position: absolute; bottom: -12px; left: 4px;
-  width: 18px; height: 14px; background: #5c6bc0; border: 3px solid #283593;
-  border-radius: 0 0 4px 4px;
+  content: ''; position: absolute; bottom: -14px; left: 10px;
+  width: 30px; height: 16px; background: #5c6bc0; border: 3px solid #283593;
+  border-radius: 0 0 5px 5px;
 }
 .outfit-pants::after {
-  content: ''; position: absolute; bottom: -12px; right: 4px;
-  width: 18px; height: 14px; background: #5c6bc0; border: 3px solid #283593;
-  border-radius: 0 0 4px 4px;
+  content: ''; position: absolute; bottom: -14px; right: 10px;
+  width: 30px; height: 16px; background: #5c6bc0; border: 3px solid #283593;
+  border-radius: 0 0 5px 5px;
 }
 
 .outfit-shorts {
   position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%);
-  width: 56px; height: 18px;
+  width: 100px; height: 20px;
   background: #ffd54f; border: 3px solid #f9a825; border-radius: 4px;
-  z-index: -1;
+  z-index: 2;
 }
 .outfit-shorts::before {
-  content: ''; position: absolute; bottom: -6px; left: 4px;
-  width: 18px; height: 8px; background: #ffd54f; border: 3px solid #f9a825;
-  border-radius: 0 0 3px 3px;
+  content: ''; position: absolute; bottom: -8px; left: 10px;
+  width: 30px; height: 10px; background: #ffd54f; border: 3px solid #f9a825;
+  border-radius: 0 0 4px 4px;
 }
 .outfit-shorts::after {
-  content: ''; position: absolute; bottom: -6px; right: 4px;
-  width: 18px; height: 8px; background: #ffd54f; border: 3px solid #f9a825;
-  border-radius: 0 0 3px 3px;
+  content: ''; position: absolute; bottom: -8px; right: 10px;
+  width: 30px; height: 10px; background: #ffd54f; border: 3px solid #f9a825;
+  border-radius: 0 0 4px 4px;
 }
 
 /* ===================== CONFETTI ===================== */
@@ -4545,54 +4530,54 @@ html, body {
 .bed-hint { font-size: .8rem; color: #a0a0d0; }
 
 /* ===================== MAKEUP OVERLAYS (on pet) ===================== */
-/* The .mu-layer sits inside .accessory-overlay (200×240).
-   The chibi-body (120×110) is centered at the bottom, so body-top ≈ 115px from container top.
-   Eyes at body top+28 = 143px, blush at top+55 = 170px, mouth at top+60 = 175px. */
+/* Positioned with `bottom` to match how all accessories/outfits are placed.
+   Pet body (120×110) sits on legs (~15px), so body spans ~15–125px from bottom.
+   Eyes at body-top minus 28 → bottom: 97px. Blush → bottom: 70px. Mouth → bottom: 65px. */
 .mu-layer {
   position: absolute; inset: 0; pointer-events: none; z-index: 5;
 }
 
-/* Blush — on cheeks, same level as pet blush (top ~170px) */
+/* Blush — on cheeks, same level as pet blush marks */
 .mu-blush {
   position: absolute; width: 18px; height: 12px; border-radius: 50%; opacity: .45;
-  filter: blur(3px); top: 170px;
+  filter: blur(3px); bottom: 70px;
 }
-.mu-blush-l { left: 52px; }
-.mu-blush-r { right: 52px; }
+.mu-blush-l { left: 50%; margin-left: -48px; }
+.mu-blush-r { left: 50%; margin-left: 30px; }
 
-/* Lipstick — on mouth area (top ~176px) */
+/* Lipstick — on mouth */
 .mu-lipstick {
   position: absolute; width: 14px; height: 6px; border-radius: 50%; opacity: .75;
-  top: 176px; left: 50%; transform: translateX(-50%);
+  bottom: 63px; left: 50%; transform: translateX(-50%);
 }
 
-/* Eyeshadow — just above eyes (top ~140px) */
+/* Eyeshadow — just above eyes */
 .mu-eyeshadow {
   position: absolute; width: 16px; height: 8px; border-radius: 50% 50% 30% 30%; opacity: .4;
-  top: 140px; filter: blur(1.5px);
+  bottom: 100px; filter: blur(1.5px);
 }
-.mu-eyeshadow-l { left: 60px; }
-.mu-eyeshadow-r { right: 60px; }
+.mu-eyeshadow-l { left: 50%; margin-left: -40px; }
+.mu-eyeshadow-r { left: 50%; margin-left: 24px; }
 
-/* Eyeliner — at eye level (top ~153px) */
+/* Eyeliner — at eye level */
 .mu-eyeliner {
   position: absolute; width: 18px; height: 0; border-bottom: 2px solid; border-radius: 2px;
-  top: 153px;
+  bottom: 90px;
 }
-.mu-eyeliner-l { left: 58px; transform: rotate(-3deg); }
-.mu-eyeliner-r { right: 58px; transform: rotate(3deg); }
+.mu-eyeliner-l { left: 50%; margin-left: -42px; transform: rotate(-3deg); }
+.mu-eyeliner-r { left: 50%; margin-left: 24px; transform: rotate(3deg); }
 
-/* Lashes — just above eyes (top ~137px) */
+/* Lashes — just above eyes */
 .mu-lashes {
-  position: absolute; width: 6px; height: 0; top: 137px;
+  position: absolute; width: 6px; height: 0; bottom: 104px;
   border-top: 4px solid; border-radius: 2px;
 }
-.mu-lashes-l { left: 66px; transform: rotate(-15deg); }
-.mu-lashes-r { right: 66px; transform: rotate(15deg); }
+.mu-lashes-l { left: 50%; margin-left: -34px; transform: rotate(-15deg); }
+.mu-lashes-r { left: 50%; margin-left: 28px; transform: rotate(15deg); }
 
-/* Glitter sparkle — across forehead area (top ~128px) */
+/* Glitter sparkle — across forehead */
 .mu-sparkle {
-  position: absolute; top: 128px; left: 50%; transform: translateX(-50%);
+  position: absolute; bottom: 112px; left: 50%; transform: translateX(-50%);
   font-size: 7px; letter-spacing: 6px; opacity: .8;
   animation: muSparkle 2s ease-in-out infinite;
 }
@@ -5390,6 +5375,13 @@ html, body {
 .party-outfit-opt .po-label { font-size: .45rem; font-weight: 700; color: #555; text-align: center; line-height: 1.2; }
 .party-go-btn {
   margin-top: 4px; font-size: .85rem !important;
+}
+.party-mu-cats {
+  display: flex; gap: 3px; flex-wrap: wrap; justify-content: center; margin-bottom: 4px;
+}
+.party-mu-palette {
+  display: flex; flex-wrap: wrap; gap: 5px; justify-content: center;
+  max-height: 60px; overflow-y: auto; padding: 2px 0;
 }
 
 /* -- Party vibe meter -- */

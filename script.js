@@ -132,13 +132,6 @@
   const bedTitle        = $('#bed-title');
   const bedHint         = $('#bed-hint');
 
-  // Nail salon scene refs
-  const nailScene          = $('#nail-scene');
-  const nailPetContainer   = $('#nail-pet-container');
-  const nsSpeech           = $('#ns-speech');
-  const nsSpeechText       = $('#ns-speech-text');
-  const nsParticles        = $('#ns-particles');
-
   // Makeup vanity scene refs
   const makeupScene        = $('#makeup-scene');
   const mvPetPreview       = $('#mv-pet-preview');
@@ -158,17 +151,6 @@
   const cookPetContainer   = $('#cook-pet-container');
   const ktSpeechText       = $('#kt-speech-text');
   const ktParticles        = $('#kt-particles');
-
-  // Garden scene refs
-  const gardenScene        = $('#garden-scene');
-  const gardenPetContainer = $('#garden-pet-container');
-  const gdSpeechText       = $('#gd-speech-text');
-  const gdParticles        = $('#gd-particles');
-
-  // Photo booth scene refs
-  const photoScene         = $('#photo-scene');
-  const photoPetContainer  = $('#photo-pet-container');
-  const photoAccOvl        = $('#photo-accessory-overlay');
 
   // Party scene refs
   const partyScene         = $('#party-scene');
@@ -204,7 +186,6 @@
   const btnGroom  = $('#btn-groom');
   const btnWalk   = $('#btn-walk');
   const btnSleep  = $('#btn-sleep');
-  const btnNails  = $('#btn-nails');
   const btnStickers = $('#btn-stickers');
   const btnNewPet = $('#btn-new-pet');
 
@@ -223,11 +204,8 @@
     stickers: [],        // array of sticker emoji strings
     equippedAccessory: null,  // accessory id or null
     happyStreak: 0,      // seconds happiness >= 80
-    nailColors: [null, null, null, null],  // color for each paw (null = unpainted)
     ownedOutfits: [],    // array of outfit ids the player has bought
     equippedOutfit: null, // currently worn outfit id
-    gardenPlots: [null, null, null, null], // {seed, stage, watered} or null
-    photoGallery: [],    // array of {bg, prop} snapshots
     makeup: { blush: null, lipstick: null, eyeshadow: null, eyeliner: null, lashes: null, sparkle: null },
     createdAt: null,     // timestamp when pet was created
     lastBdaySurprise: null, // date string of last birthday surprise
@@ -311,7 +289,7 @@
   function pick(arr) { return arr[rand(0, arr.length - 1)]; }
 
   function showScreen(screen) {
-    [splashScreen, selectScreen, gameScreen, feedScene, parkScene, groomScene, bathScene, dryScene, walkScene, playgroundScene, sleepScene, nailScene, makeupScene, dressScene, cookScene, gardenScene, photoScene, partyScene].forEach(s => s.classList.remove('active'));
+    [splashScreen, selectScreen, gameScreen, feedScene, parkScene, groomScene, bathScene, dryScene, walkScene, playgroundScene, sleepScene, makeupScene, dressScene, cookScene, partyScene].forEach(s => s.classList.remove('active'));
     screen.classList.add('active');
     // Hide the brush when leaving barber shop
     if (screen !== groomScene) barberBrush.style.display = 'none';
@@ -358,28 +336,22 @@
         <div class="chibi-legs"><div class="chibi-leg"></div><div class="chibi-leg"></div></div>
         <div class="cat-tail"></div>
       `;
-    } else if (state.petType === 'hamster') {
+    } else if (state.petType === 'axolotl') {
       return `
-        <div class="hamster-ear-l"></div>
-        <div class="hamster-ear-r"></div>
-        <div class="hamster-ear-inner-l"></div>
-        <div class="hamster-ear-inner-r"></div>
+        <div class="axo-gill-l"></div>
+        <div class="axo-gill-r"></div>
         <div class="chibi-body">
-          <div class="hamster-cheek-l"></div>
-          <div class="hamster-cheek-r"></div>
           <div class="chibi-belly"></div>
           <div class="chibi-eyes"><div class="chibi-eye eye-l"></div><div class="chibi-eye eye-r"></div></div>
-          <div class="chibi-nose"></div>
           <div class="chibi-mouth"></div>
           <div class="chibi-blush-l"></div>
           <div class="chibi-blush-r"></div>
-          <div class="hamster-whiskers">
-            <div class="hamster-whisker"></div><div class="hamster-whisker"></div>
-            <div class="hamster-whisker"></div><div class="hamster-whisker"></div>
+          <div class="axo-freckles">
+            <span class="axo-freckle"></span><span class="axo-freckle"></span><span class="axo-freckle"></span>
           </div>
         </div>
         <div class="chibi-legs"><div class="chibi-leg"></div><div class="chibi-leg"></div></div>
-        <div class="hamster-tail"></div>
+        <div class="axo-tail"></div>
       `;
     } else {
       return `
@@ -489,131 +461,6 @@
     }
   }
 
-  // ──────────── LIVING ROOM CLEANING ────────────
-  // Mess only appears when you press the Clean button.
-  // Once cleaned, it stays clean until you press Clean again.
-  const messItems = $$('.mess-item');
-  const livingRoom = document.querySelector('.living-room');
-  const cleanSparklesCont = $('#lr-clean-sparkles');
-
-  let cleaningMode = false;
-  let cleanCount = 0;
-  const cleanModeBar = $('#clean-mode-bar');
-  const cleanMeter = $('#clean-meter');
-  const cleanCountEl = $('#clean-count');
-
-  function hideAllMess() {
-    messItems.forEach(item => {
-      item.classList.remove('visible', 'cleaning');
-    });
-    if (livingRoom) livingRoom.classList.remove('messy', 'very-messy', 'cleaning-mode');
-  }
-
-  function openCleanMode() {
-    if (actionLocked) return;
-    actionLocked = true;
-    sfxClick();
-    cleaningMode = true;
-    cleanCount = 0;
-    cleanCountEl.textContent = '0';
-    cleanMeter.style.width = '0%';
-
-    // Show all mess items
-    messItems.forEach(item => {
-      item.classList.remove('cleaning');
-      item.classList.add('visible');
-    });
-
-    // Enter cleaning mode
-    livingRoom.classList.add('cleaning-mode');
-    gameScreen.classList.add('game-cleaning');
-    cleanModeBar.classList.remove('hidden');
-
-    showSpeech(pick(['Time to tidy up! 🧹', 'Let\'s clean!', 'Spotless incoming!']), 2000);
-  }
-
-  function cleanMessItem(item) {
-    if (!item.classList.contains('visible')) return;
-    if (item.classList.contains('cleaning')) return;
-
-    sfxPop();
-
-    // Spawn sparkle at the item's position
-    const rect = item.getBoundingClientRect();
-    const parentRect = cleanSparklesCont.getBoundingClientRect();
-    for (let i = 0; i < 3; i++) {
-      const sp = document.createElement('span');
-      sp.className = 'clean-sparkle';
-      sp.textContent = pick(['✨', '🫧', '💫', '🧹']);
-      sp.style.left = (rect.left - parentRect.left + rand(-10, 10)) + 'px';
-      sp.style.top = (rect.top - parentRect.top + rand(-10, 10)) + 'px';
-      sp.style.animationDelay = (i * 0.1) + 's';
-      cleanSparklesCont.appendChild(sp);
-      setTimeout(() => sp.remove(), 900);
-    }
-
-    // Animate item away
-    item.classList.remove('visible');
-    item.classList.add('cleaning');
-    setTimeout(() => item.classList.remove('cleaning'), 500);
-
-    // Boost cleanliness
-    state.cleanliness = clamp(state.cleanliness + 5);
-
-    // Track progress
-    cleanCount++;
-    if (cleanCountEl) cleanCountEl.textContent = cleanCount;
-
-    const stillVisible = Array.from(messItems).filter(m => m.classList.contains('visible')).length;
-    const progress = Math.round(((messItems.length - stillVisible) / messItems.length) * 100);
-    if (cleanMeter) cleanMeter.style.width = Math.min(progress, 100) + '%';
-
-    if (stillVisible === 0) {
-      showSpeech(pick(['Sparkly clean! ✨', 'The room looks great!', 'So tidy! 🫧']), 2000);
-      setTimeout(() => exitCleanMode(), 800);
-    } else {
-      showSpeech(pick(['Clean clean!', 'Tidy up! 🧹', 'Spotless!', 'Good as new!', 'Shiny! ✨']), 1200);
-    }
-
-    updateUI();
-    saveGame();
-  }
-
-  function exitCleanMode() {
-    cleaningMode = false;
-    actionLocked = false;
-    livingRoom.classList.remove('cleaning-mode');
-    gameScreen.classList.remove('game-cleaning');
-    cleanModeBar.classList.add('hidden');
-
-    // Hide any remaining mess
-    hideAllMess();
-
-    if (cleanCount > 0) {
-      sfxHappy();
-      state.hearts += Math.floor(cleanCount / 3);
-      spawnSparkles(4);
-      showSpeech(pick(['All tidy! ✨', 'Clean and fresh!', 'Great job cleaning! 🫧']), 2500);
-      spawnConfetti(10);
-      updateUI();
-      saveGame();
-    }
-  }
-
-  // Attach click handlers to mess items (only works in cleaning mode)
-  messItems.forEach(item => {
-    item.addEventListener('click', (e) => {
-      e.stopPropagation();
-      if (!cleaningMode) return;
-      cleanMessItem(item);
-    });
-  });
-
-  // Done button
-  $('#clean-done').addEventListener('click', exitCleanMode);
-
-  // Start with a clean room
-  hideAllMess();
 
   // ──────────── GAME LOOP: STAT DECAY ────────────
   // Every 3 seconds stats gently decay. Each pet type decays differently:
@@ -628,7 +475,7 @@
       if (state.petType === 'dog')   { cd = 1.8; fd = 0.9; }
       if (state.petType === 'cat')   { gd = 1.5; hd = 1.8; }
       if (state.petType === 'bird')  { hd = 2.2; gd = 0.6; }
-      if (state.petType === 'hamster') { hd = 2.0; fd = 1.0; cd = 0.8; }
+      if (state.petType === 'axolotl') { cd = 1.8; hd = 1.6; gd = 0.5; }
 
       state.hunger      = clamp(state.hunger - hd);
       state.cleanliness = clamp(state.cleanliness - cd);
@@ -908,9 +755,9 @@
       foodEmoji = '🌻';
     }
 
-    // Hamster loves seeds, stores food in cheeks!
-    if (state.petType === 'hamster') {
-      if (snack === 'seeds') { hg = 35; fg = 12; }
+    // Axolotl loves worms, thrives in water!
+    if (state.petType === 'axolotl') {
+      if (snack === 'fish') { hg = 35; fg = 12; }
       if (snack === 'kibble') { hg = 22; }
     }
 
@@ -1452,7 +1299,7 @@
       }
 
       // Show success message
-      const petNick = state.petType === 'dog' ? 'boy' : state.petType === 'cat' ? 'kitty' : state.petType === 'hamster' ? 'hammy' : 'birdie';
+      const petNick = state.petType === 'dog' ? 'boy' : state.petType === 'cat' ? 'kitty' : state.petType === 'axolotl' ? 'axie' : 'birdie';
       const cheers = ['Great job! ⭐', 'Amazing! 🌟', 'Good ' + petNick + '! 🎉', 'Wow! ✨', 'Purrfect! 💫'];
       $('#trick-result').textContent = pick(cheers);
       parkSpeechText.textContent = pick(['Yay!', 'I did it!', 'Treat please! 🍪', 'Woo!']);
@@ -1582,12 +1429,12 @@
   const NPC_DOG_NAMES = ['Biscuit', 'Peanut', 'Waffles', 'Mochi', 'Pepper', 'Churro', 'Nugget', 'Tofu'];
   const NPC_CAT_NAMES = ['Whiskers', 'Mittens', 'Noodle', 'Marshmallow', 'Pudding', 'Cinnamon', 'Muffin', 'Sesame'];
   const NPC_BIRD_NAMES = ['Tweety', 'Peep', 'Chirpy', 'Sunny', 'Kiwi', 'Mango', 'Pip', 'Sky'];
-  const NPC_HAMSTER_NAMES = ['Peanut', 'Cheeks', 'Nibbles', 'Squeaky', 'Boba', 'Poppy', 'Hazel', 'Acorn'];
+  const NPC_AXOLOTL_NAMES = ['Coral', 'Bubble', 'Splash', 'Nemo', 'Pearl', 'Puddle', 'Gilly', 'Marina'];
 
   function getNpcNames() {
     if (state.petType === 'dog') return NPC_DOG_NAMES;
     if (state.petType === 'cat') return NPC_CAT_NAMES;
-    if (state.petType === 'hamster') return NPC_HAMSTER_NAMES;
+    if (state.petType === 'axolotl') return NPC_AXOLOTL_NAMES;
     return NPC_BIRD_NAMES;
   }
 
@@ -1628,8 +1475,8 @@
       ? ['Walkies! 🐕', 'Let\'s go outside!', 'I love walks!', 'Sniff sniff!']
       : state.petType === 'cat'
         ? ['A stroll? Okay... 🐱', 'Fresh air is nice.', 'I\'ll walk... for treats.']
-        : state.petType === 'hamster'
-          ? ['Adventure time! 🐹', 'So much to explore!', 'Squeak squeak!', 'Tiny steps, big world!']
+        : state.petType === 'axolotl'
+          ? ['A walk? Blub blub! 🦎', 'I waddle so cute!', 'Splish splash!', 'Land adventure!']
           : ['Flutter time! 🐦', 'Hop hop hop!', 'Fresh air! Chirp!'];
     walkSpeechText.textContent = pick(walkLines);
     walkSpeech.classList.remove('hidden');
@@ -1862,8 +1709,8 @@
       return ['Woof woof! 🐕', 'Hewwo!', 'Sniff sniff?', '*tail wagging*', 'Play? Play?!', 'Bark bark! 🎾', 'Fren!! 💕'];
     } else if (state.petType === 'cat') {
       return ['Mew? 🐱', '*slow blink*', 'Purr~', 'Meow meow!', '*curious look*', 'Mrow~', 'Pspsps? 😸'];
-    } else if (state.petType === 'hamster') {
-      return ['Squeak! 🐹', '*wiggles nose*', 'Eep eep!', '*stuffs cheeks*', 'Hi hi hi!', '*tiny wave*', 'Wheek! 💕'];
+    } else if (state.petType === 'axolotl') {
+      return ['Blub! 🦎', '*wiggles gills*', 'Bloop bloop!', '*happy swim*', 'Hi hi hi!', '*tiny wave*', 'Splash! 💕'];
     }
     return ['Chirp chirp! 🐦', 'Tweet!', '*flutters wings*', 'Peep peep!', 'Sing sing! 🎵', 'Cheep!', '*head tilt*'];
   }
@@ -1945,14 +1792,14 @@
   function getNpcMeetLines() {
     if (state.petType === 'dog') return ['Let\'s play! 🐕', 'SLIDE SLIDE!', 'TRICKS!!', 'I can jump!'];
     if (state.petType === 'cat') return ['This looks fun.', 'Watch this!', '*climbs slide*', 'Hmm, okay!'];
-    if (state.petType === 'hamster') return ['Wheee tiny slide! 🐹', 'Watch me roll!', '*zooms through tube*', 'So fun!'];
+    if (state.petType === 'axolotl') return ['Wheee water slide! 🦎', 'Watch me wiggle!', '*splashes everywhere*', 'So fun!'];
     return ['Wheee! 🐦', 'Chirp chirp!', 'Fly high!', 'My turn!'];
   }
 
   function getPlayerMeetLines() {
     if (state.petType === 'dog') return ['PLAYGROUND!! 🐕', 'BEST DAY EVER!', 'Let\'s GO!', 'I wanna slide!'];
     if (state.petType === 'cat') return ['A playground? 🐱', 'I suppose...', 'Not bad!', 'Interesting.'];
-    if (state.petType === 'hamster') return ['Tiny playground! 🐹', 'I fit in the tube!', 'Squeak squeak!', 'This is amazing!'];
+    if (state.petType === 'axolotl') return ['Playground! 🦎', 'Water + slides = yay!', 'Blub blub!', 'This is amazing!'];
     return ['Ooh fun! 🐦', 'Hop hop!', 'Look at that slide!', 'Yay!'];
   }
 
@@ -2594,8 +2441,8 @@
   function spawnFluffParticle() {
     const fluffIcons = state.petType === 'bird'
       ? ['🪶', '✨', '💨']
-      : state.petType === 'hamster'
-      ? ['✨', '🐹', '💨']
+      : state.petType === 'axolotl'
+      ? ['✨', '🦎', '💧']
       : ['💨', '✨', '🌟', '💫'];
     const f = document.createElement('span');
     f.className = 'fluff-particle';
@@ -2766,188 +2613,6 @@
     showScreen(gameScreen);
   }
 
-  // ──────────── NAIL SALON ────────────
-  let nailActive = false;
-  let selectedNailColor = '#ff6b8a';
-  let pawsPainted = 0;
-
-  function openNails() {
-    if (actionLocked) return;
-    actionLocked = true;
-    sfxClick();
-    nailActive = true;
-    pawsPainted = 0;
-    $('#ns-paws-count').textContent = '0';
-    $('#nail-back').style.display = 'none';
-
-    // Draw pet in salon
-    drawPetInto(nailPetContainer, 'nail-chibi-pet');
-
-    // Speech
-    const lines = state.petType === 'dog'
-      ? ['Ooh pretty colors!', 'Paint my paws! 🐾', 'I want sparkles!']
-      : state.petType === 'cat'
-        ? ['Fancy nails? Yes please! 💅', 'Make me pretty!', 'Hmm, what color?']
-        : state.petType === 'hamster'
-          ? ['Tiny paw makeover! 🐹', 'My little nails!', 'Squeak! Pretty colors!']
-        : ['Paint my feet! 🐦', 'Pretty talons! ✨', 'Ooh shiny!'];
-    nsSpeechText.textContent = pick(lines);
-    nsSpeech.style.display = '';
-
-    // Reset paw visuals to current saved nail colors
-    for (let i = 0; i < 4; i++) {
-      const paw = $(`#ns-paw-${i}`);
-      paw.classList.remove('just-painted');
-      const nails = paw.querySelectorAll('.ns-nail');
-      const savedColor = state.nailColors[i];
-      nails.forEach(n => {
-        n.classList.remove('painted', 'sparkle-nail');
-        if (savedColor) {
-          if (savedColor === 'sparkle') {
-            n.style.background = 'linear-gradient(135deg,#fbbf24,#f472b6,#a78bfa,#38bdf8)';
-            n.classList.add('painted', 'sparkle-nail');
-          } else {
-            n.style.background = savedColor;
-            n.classList.add('painted');
-          }
-          n.style.borderColor = 'rgba(0,0,0,.2)';
-        } else {
-          n.style.background = 'transparent';
-          n.style.borderColor = 'transparent';
-        }
-      });
-    }
-
-    // Reset color picker
-    $$('.ns-color-btn').forEach(b => b.classList.remove('ns-color-active'));
-    const defaultBtn = document.querySelector('.ns-color-btn[data-color="#ff6b8a"]');
-    if (defaultBtn) defaultBtn.classList.add('ns-color-active');
-    selectedNailColor = '#ff6b8a';
-
-    showScreen(nailScene);
-  }
-
-  function paintPaw(pawIndex) {
-    if (!nailActive) return;
-    sfxPop();
-
-    const paw = $(`#ns-paw-${pawIndex}`);
-    const nails = paw.querySelectorAll('.ns-nail');
-
-    // Apply selected color to all nails on this paw
-    nails.forEach(n => {
-      n.classList.remove('sparkle-nail');
-      if (selectedNailColor === 'sparkle') {
-        n.style.background = 'linear-gradient(135deg,#fbbf24,#f472b6,#a78bfa,#38bdf8)';
-        n.classList.add('painted', 'sparkle-nail');
-      } else {
-        n.style.background = selectedNailColor;
-        n.classList.add('painted');
-      }
-      n.style.borderColor = 'rgba(0,0,0,.2)';
-    });
-
-    // Save the color
-    const wasPainted = state.nailColors[pawIndex] !== null;
-    state.nailColors[pawIndex] = selectedNailColor;
-
-    // Animate paw
-    paw.classList.remove('just-painted');
-    void paw.offsetWidth;
-    paw.classList.add('just-painted');
-
-    // Count newly painted paws this session
-    if (!wasPainted) {
-      pawsPainted++;
-      $('#ns-paws-count').textContent = pawsPainted;
-    }
-
-    // Sparkle particles
-    spawnNailSparkles(3);
-
-    // Pet reactions
-    const pPet = $('#nail-chibi-pet');
-    if (pPet) {
-      pPet.classList.remove('pet-happy');
-      void pPet.offsetWidth;
-      pPet.classList.add('pet-happy');
-    }
-
-    const reactions = ['Ooh pretty!', 'I love it! 💕', 'So fancy! ✨', 'More more!', 'Beautiful! 💅', 'Wow! 🌟'];
-    nsSpeechText.textContent = pick(reactions);
-
-    // Check if all 4 paws are painted
-    const allPainted = state.nailColors.every(c => c !== null);
-    if (allPainted && pawsPainted >= 4) {
-      setTimeout(() => endNailSession(), 800);
-    }
-
-    saveGame();
-  }
-
-  function spawnNailSparkles(count) {
-    for (let i = 0; i < count; i++) {
-      const s = document.createElement('span');
-      s.className = 'sparkle-particle';
-      s.textContent = pick(['✨', '💅', '💫', '🌟', '💕']);
-      s.style.left = rand(20, 80) + '%';
-      s.style.top = rand(10, 50) + '%';
-      s.style.animationDelay = (i * 0.1) + 's';
-      nsParticles.appendChild(s);
-      setTimeout(() => s.remove(), 1200);
-    }
-  }
-
-  function endNailSession() {
-    sfxHappy();
-    spawnConfetti(20);
-    spawnNailSparkles(8);
-
-    state.grooming = clamp(state.grooming + 15);
-    state.fun      = clamp(state.fun + 10);
-    state.hearts  += 2;
-
-    nsSpeechText.textContent = pick(['GORGEOUS! 💅✨', 'I\'m so pretty!', 'Best nails ever! 🌟', 'Fashion icon! 💕']);
-    $('#nail-back').style.display = 'inline-block';
-
-    updateUI();
-    saveGame();
-
-    // Auto-return after a pause
-    setTimeout(() => {
-      nailActive = false;
-      actionLocked = false;
-      showScreen(gameScreen);
-      spawnSparkles(6);
-      petBounce();
-      showSpeech(pick(['Look at my nails! 💅', 'So pretty! ✨', 'I feel fancy!']), 2500);
-    }, 2500);
-  }
-
-  function leaveNailSalon() {
-    nailActive = false;
-    actionLocked = false;
-    saveGame();
-    showScreen(gameScreen);
-  }
-
-  // Color picker handler
-  $$('.ns-color-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
-      sfxClick();
-      $$('.ns-color-btn').forEach(b => b.classList.remove('ns-color-active'));
-      btn.classList.add('ns-color-active');
-      selectedNailColor = btn.dataset.color;
-    });
-  });
-
-  // Paw click handlers
-  $$('.ns-paw').forEach(paw => {
-    paw.addEventListener('click', () => {
-      const idx = parseInt(paw.dataset.paw);
-      paintPaw(idx);
-    });
-  });
 
   // ──────────── MAKEUP VANITY ────────────
   const MAKEUP_PALETTES = {
@@ -3414,170 +3079,6 @@
     btn.addEventListener('click', () => addIngredient(btn.dataset.ingr, btn));
   });
 
-  // ──────────── GARDEN ────────────
-  const SEEDS = [
-    { name: 'Carrot',     emoji: '🥕', stages: ['🌱', '🌿', '🥕'], harvestHunger: 15, harvestFun: 5 },
-    { name: 'Strawberry', emoji: '🍓', stages: ['🌱', '🌿', '🍓'], harvestHunger: 12, harvestFun: 8 },
-    { name: 'Sunflower',  emoji: '🌻', stages: ['🌱', '🌿', '🌻'], harvestHunger: 5,  harvestFun: 15 },
-    { name: 'Tomato',     emoji: '🍅', stages: ['🌱', '🌿', '🍅'], harvestHunger: 14, harvestFun: 6 },
-  ];
-  let gardenAction = 'plant'; // 'plant' | 'water' | 'harvest'
-
-  function openGarden() {
-    if (actionLocked) return;
-    actionLocked = true;
-    sfxClick();
-    drawPetInto(gardenPetContainer, 'garden-chibi-pet');
-    gdSpeechText.textContent = pick(['Garden time! 🌱', 'Let\'s grow stuff!', 'I love the garden!']);
-    gardenAction = 'plant';
-    $$('.gd-act-btn').forEach(b => b.classList.remove('active'));
-    $('#gd-btn-plant').classList.add('active');
-    renderGardenPlots();
-    showScreen(gardenScene);
-  }
-
-  function renderGardenPlots() {
-    for (let i = 0; i < 4; i++) {
-      const plot = $(`#gd-plot-${i}`);
-      const plantEl = $(`#gd-plant-${i}`);
-      const data = state.gardenPlots[i];
-      plot.classList.remove('planted', 'watered');
-      if (!data) {
-        plantEl.textContent = '';
-      } else {
-        plot.classList.add('planted');
-        if (data.watered) plot.classList.add('watered');
-        const seed = SEEDS.find(s => s.name === data.seed);
-        plantEl.textContent = seed ? seed.stages[Math.min(data.stage, 2)] : '🌱';
-      }
-    }
-  }
-
-  function gardenPlotClick(idx) {
-    const data = state.gardenPlots[idx];
-    if (gardenAction === 'plant') {
-      if (data) { gdSpeechText.textContent = 'Already planted!'; return; }
-      const seed = pick(SEEDS);
-      state.gardenPlots[idx] = { seed: seed.name, stage: 0, watered: false };
-      sfxPop();
-      gdSpeechText.textContent = pick(['Planted ' + seed.emoji + '!', 'Grow grow!', 'Seed in the ground!']);
-    } else if (gardenAction === 'water') {
-      if (!data) { gdSpeechText.textContent = 'Plant something first!'; return; }
-      if (data.stage >= 2) { gdSpeechText.textContent = 'Ready to harvest!'; return; }
-      data.watered = true;
-      data.stage = Math.min(data.stage + 1, 2);
-      sfxSplash();
-      gdSpeechText.textContent = pick(['Splash! 💧', 'Growing nicely!', 'Water water!']);
-      // Spawn water drops
-      const em = document.createElement('span'); em.className = 'sparkle-particle'; em.textContent = '💧';
-      em.style.left = (25 + idx * 18) + '%'; em.style.top = '40%';
-      gdParticles.appendChild(em); setTimeout(() => em.remove(), 1000);
-    } else if (gardenAction === 'harvest') {
-      if (!data || data.stage < 2) { gdSpeechText.textContent = data ? 'Not ready yet!' : 'Nothing here!'; return; }
-      const seed = SEEDS.find(s => s.name === data.seed);
-      state.gardenPlots[idx] = null;
-      state.hunger = clamp(state.hunger + (seed ? seed.harvestHunger : 10));
-      state.fun = clamp(state.fun + (seed ? seed.harvestFun : 5));
-      state.hearts += 1;
-      sfxHappy();
-      gdSpeechText.textContent = pick(['Harvested ' + (seed ? seed.emoji : '🌱') + '!', 'Yummy! Fresh food!', 'From garden to plate!']);
-      spawnConfetti(10);
-    }
-    renderGardenPlots();
-    updateUI();
-    saveGame();
-  }
-
-  $$('.gd-act-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
-      gardenAction = btn.dataset.act;
-      $$('.gd-act-btn').forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      sfxClick();
-    });
-  });
-  $$('.gd-plot').forEach(plot => {
-    plot.addEventListener('click', () => gardenPlotClick(parseInt(plot.dataset.plot)));
-  });
-
-  function leaveGarden() { actionLocked = false; showScreen(gameScreen); }
-
-  // ──────────── PHOTO BOOTH ────────────
-  let pbBg = 'stars';
-  let pbProp = 'crown';
-
-  function openPhotoBooth() {
-    if (actionLocked) return;
-    actionLocked = true;
-    sfxClick();
-    drawPetInto(photoPetContainer, 'photo-chibi-pet');
-    // Show outfit on photo pet
-    photoAccOvl.innerHTML = '';
-    if (state.equippedOutfit) {
-      const outfit = OUTFITS.find(o => o.id === state.equippedOutfit);
-      if (outfit) { const el = document.createElement('div'); el.className = outfit.cssClass; photoAccOvl.appendChild(el); }
-    }
-    setPbBackdrop(pbBg);
-    setPbProp(pbProp);
-    renderPhotoGallery();
-    showScreen(photoScene);
-  }
-
-  function setPbBackdrop(bg) {
-    pbBg = bg;
-    const bd = $('#pb-backdrop');
-    bd.className = 'pb-backdrop bg-' + bg;
-    $$('.pb-bg-btn').forEach(b => b.classList.toggle('pb-bg-active', b.dataset.bg === bg));
-  }
-  function setPbProp(prop) {
-    pbProp = prop;
-    const propEl = $('#pb-prop');
-    const propMap = { none: '', crown: '👑', star: '⭐', flower: '🌸', heart: '💖', sparkle: '✨' };
-    propEl.textContent = propMap[prop] || '';
-    $$('.pb-prop-btn').forEach(b => b.classList.toggle('pb-prop-active', b.dataset.prop === prop));
-  }
-
-  function snapPhoto() {
-    sfxSticker();
-    // Flash
-    const flash = $('#pb-flash');
-    flash.classList.add('active');
-    setTimeout(() => flash.classList.remove('active'), 200);
-    // Save to gallery
-    const photo = { bg: pbBg, prop: pbProp, pet: state.petType, name: state.petName };
-    state.photoGallery.unshift(photo);
-    if (state.photoGallery.length > 8) state.photoGallery.pop();
-    state.fun = clamp(state.fun + 8);
-    state.hearts += 1;
-    renderPhotoGallery();
-    updateUI();
-    saveGame();
-    // Sparkles
-    for (let i = 0; i < 4; i++) {
-      const s = document.createElement('span'); s.className = 'sparkle-particle';
-      s.textContent = pick(['📸', '✨', '💫', '🌟']); s.style.left = rand(20, 80) + '%'; s.style.top = rand(10, 50) + '%';
-      $('#pb-particles').appendChild(s); setTimeout(() => s.remove(), 1200);
-    }
-  }
-
-  function renderPhotoGallery() {
-    const gal = $('#pb-gallery');
-    gal.innerHTML = '';
-    state.photoGallery.forEach(p => {
-      const div = document.createElement('div');
-      div.className = 'pb-gallery-item';
-      const propMap = { none: '', crown: '👑', star: '⭐', flower: '🌸', heart: '💖', sparkle: '✨' };
-      const bgMap = { stars: '⭐', hearts: '💕', rainbow: '🌈', beach: '🏖️', space: '🚀' };
-      div.innerHTML = `${bgMap[p.bg] || ''}${propMap[p.prop] || ''}<br>${p.pet === 'dog' ? '🐕' : p.pet === 'cat' ? '🐱' : '🐦'}`;
-      gal.appendChild(div);
-    });
-  }
-
-  $$('.pb-bg-btn').forEach(b => b.addEventListener('click', () => { sfxClick(); setPbBackdrop(b.dataset.bg); }));
-  $$('.pb-prop-btn').forEach(b => b.addEventListener('click', () => { sfxClick(); setPbProp(b.dataset.prop); }));
-  $('#btn-snap').addEventListener('click', snapPhoto);
-
-  function leavePhotoBooth() { actionLocked = false; showScreen(gameScreen); }
 
   // ──────────── VISITING FRIENDS ────────────
   let visitorActive = false;
@@ -3630,7 +3131,7 @@
 
     const speech = document.createElement('div');
     speech.className = 'visitor-speech';
-    const names = state.petType === 'dog' ? ['Biscuit', 'Mochi', 'Waffles'] : state.petType === 'cat' ? ['Mittens', 'Pudding', 'Noodle'] : state.petType === 'hamster' ? ['Cheeks', 'Nibbles', 'Boba'] : ['Kiwi', 'Pip', 'Mango'];
+    const names = state.petType === 'dog' ? ['Biscuit', 'Mochi', 'Waffles'] : state.petType === 'cat' ? ['Mittens', 'Pudding', 'Noodle'] : state.petType === 'axolotl' ? ['Coral', 'Bubble', 'Splash'] : ['Kiwi', 'Pip', 'Mango'];
     const name = pick(names);
     speech.textContent = name + ': ' + pick(['Hi! 👋', 'Let\'s hang out!', 'Nice place!', 'Hey friend!']);
     wrap.appendChild(speech);
@@ -3673,7 +3174,7 @@
     dog: ['Biscuit', 'Mochi', 'Waffles', 'Nugget', 'Coco', 'Toffee'],
     cat: ['Mittens', 'Pudding', 'Noodle', 'Luna', 'Muffin', 'Whiskers'],
     bird: ['Kiwi', 'Pip', 'Mango', 'Sunny', 'Chirp', 'Feathers'],
-    hamster: ['Cheeks', 'Nibbles', 'Boba', 'Squeaky', 'Hazel', 'Acorn'],
+    axolotl: ['Coral', 'Bubble', 'Splash', 'Pearl', 'Puddle', 'Marina'],
   };
 
   const PARTY_DECO = {
@@ -3741,15 +3242,17 @@
     });
   });
 
+  let partyMuCat = 'blush';
+
   function showPartyOutfitPicker() {
     partyPicker.style.display = 'none';
     $('#party-outfit-picker').style.display = '';
     partyOutfitChoice = state.equippedOutfit;
 
+    // Outfit grid
     const grid = $('#party-outfit-grid');
     grid.innerHTML = '';
 
-    // "Current" option (whatever you have on or none)
     const noneBtn = document.createElement('button');
     noneBtn.className = 'party-outfit-opt' + (!partyOutfitChoice ? ' selected' : '');
     noneBtn.innerHTML = '<span class="po-icon">🐾</span><span class="po-label">None</span>';
@@ -3773,11 +3276,61 @@
       });
       grid.appendChild(btn);
     });
+
+    // Makeup category tabs
+    const muCats = $('#party-mu-cats');
+    muCats.innerHTML = '';
+    const catLabels = { blush: '🩷 Blush', lipstick: '💋 Lips', eyeshadow: '👁️ Shadow', eyeliner: '✏️ Liner', lashes: '🦋 Lashes', sparkle: '✨ Glitter' };
+    Object.keys(MAKEUP_PALETTES).forEach(cat => {
+      const btn = document.createElement('button');
+      btn.className = 'mv-cat-btn' + (cat === 'blush' ? ' active' : '');
+      btn.textContent = catLabels[cat];
+      btn.addEventListener('click', () => {
+        partyMuCat = cat;
+        muCats.querySelectorAll('.mv-cat-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        renderPartyMuPalette(cat);
+        sfxClick();
+      });
+      muCats.appendChild(btn);
+    });
+    partyMuCat = 'blush';
+    renderPartyMuPalette('blush');
+  }
+
+  function renderPartyMuPalette(cat) {
+    const palette = $('#party-mu-palette');
+    palette.innerHTML = '';
+    const removeBtn = document.createElement('button');
+    removeBtn.className = 'mv-swatch mv-swatch-remove' + (!state.makeup[cat] ? ' active' : '');
+    removeBtn.innerHTML = '✕';
+    removeBtn.addEventListener('click', () => {
+      state.makeup[cat] = null;
+      renderPartyMuPalette(cat);
+      updateAccessory();
+      saveGame();
+      sfxClick();
+    });
+    palette.appendChild(removeBtn);
+
+    MAKEUP_PALETTES[cat].forEach(c => {
+      const btn = document.createElement('button');
+      btn.className = 'mv-swatch' + (state.makeup[cat] === c.color ? ' active' : '');
+      btn.style.background = c.color;
+      btn.title = c.label;
+      btn.addEventListener('click', () => {
+        state.makeup[cat] = c.color;
+        renderPartyMuPalette(cat);
+        updateAccessory();
+        saveGame();
+        sfxPop();
+      });
+      palette.appendChild(btn);
+    });
   }
 
   $('#party-go-btn').addEventListener('click', () => {
     sfxHappy();
-    // Equip chosen outfit
     state.equippedOutfit = partyOutfitChoice;
     if (partyOutfitChoice && !state.ownedOutfits.includes(partyOutfitChoice)) {
       state.ownedOutfits.push(partyOutfitChoice);
@@ -4357,7 +3910,7 @@
       dog: ['Biscuit', 'Mochi', 'Waffles'],
       cat: ['Mittens', 'Pudding', 'Noodle'],
       bird: ['Kiwi', 'Pip', 'Mango'],
-      hamster: ['Cheeks', 'Nibbles', 'Boba'],
+      axolotl: ['Coral', 'Bubble', 'Splash'],
     };
     return names[state.petType] || names.dog;
   }
@@ -4660,10 +4213,10 @@
       { name: 'Pip', avatar: '🐤', personality: 'shy' },
       { name: 'Mango', avatar: '🦜', personality: 'sassy' },
     ],
-    hamster: [
-      { name: 'Cheeks', avatar: '🐹', personality: 'goofy' },
-      { name: 'Nibbles', avatar: '🐿️', personality: 'sweet' },
-      { name: 'Boba', avatar: '🐁', personality: 'energetic' },
+    axolotl: [
+      { name: 'Coral', avatar: '🦎', personality: 'goofy' },
+      { name: 'Bubble', avatar: '🐟', personality: 'sweet' },
+      { name: 'Splash', avatar: '🐠', personality: 'energetic' },
     ],
   };
 
@@ -4984,11 +4537,8 @@
       hearts: state.hearts,
       stickers: state.stickers,
       equippedAccessory: state.equippedAccessory,
-      nailColors: state.nailColors,
       ownedOutfits: state.ownedOutfits,
       equippedOutfit: state.equippedOutfit,
-      gardenPlots: state.gardenPlots,
-      photoGallery: state.photoGallery,
       makeup: state.makeup,
     };
     try { localStorage.setItem(SAVE_KEY, JSON.stringify(data)); } catch (_) {}
@@ -5009,11 +4559,8 @@
       state.hearts           = data.hearts ?? 0;
       state.stickers         = data.stickers || [];
       state.equippedAccessory = data.equippedAccessory || null;
-      state.nailColors       = data.nailColors || [null, null, null, null];
       state.ownedOutfits     = data.ownedOutfits || [];
       state.equippedOutfit   = data.equippedOutfit || null;
-      state.gardenPlots      = data.gardenPlots || [null, null, null, null];
-      state.photoGallery     = data.photoGallery || [];
       state.makeup           = data.makeup || { blush: null, lipstick: null, eyeshadow: null, eyeliner: null, lashes: null, sparkle: null };
       return true;
     } catch (_) { return false; }
@@ -5024,7 +4571,7 @@
     state = {
       petType: null, petName: 'Buddy',
       hunger: 70, cleanliness: 70, fun: 70, grooming: 70,
-      hearts: 0, stickers: [], equippedAccessory: null, happyStreak: 0, nailColors: [null, null, null, null], ownedOutfits: [], equippedOutfit: null, gardenPlots: [null, null, null, null], photoGallery: [],
+      hearts: 0, stickers: [], equippedAccessory: null, happyStreak: 0, ownedOutfits: [], equippedOutfit: null,
       makeup: { blush: null, lipstick: null, eyeshadow: null, eyeliner: null, lashes: null, sparkle: null },
       createdAt: null, lastBdaySurprise: null,
     };
@@ -5106,17 +4653,10 @@
   btnGroom.addEventListener('click', openGroom);
   btnWalk.addEventListener('click', openWalk);
   btnSleep.addEventListener('click', openSleep);
-  btnNails.addEventListener('click', openNails);
-  const btnClean = $('#btn-clean');
-  btnClean.addEventListener('click', openCleanMode);
   const btnDress = $('#btn-dress');
   btnDress.addEventListener('click', openDressUp);
   const btnCook = $('#btn-cook');
   btnCook.addEventListener('click', openCook);
-  const btnGarden = $('#btn-garden');
-  btnGarden.addEventListener('click', openGarden);
-  const btnPhoto = $('#btn-photo');
-  btnPhoto.addEventListener('click', openPhotoBooth);
 
   // Back button from dress-up
   $('#dress-back').addEventListener('click', leaveDressUp);
@@ -5128,16 +4668,6 @@
   $('#btn-mix').addEventListener('click', mixBowl);
   $('#btn-bake').addEventListener('click', bakeTreat);
 
-  // Back button from garden
-  $('#garden-back').addEventListener('click', leaveGarden);
-
-  // Back button from photo booth
-  $('#photo-back').addEventListener('click', leavePhotoBooth);
-
-  // Back button from nail salon
-  $('#nail-back').addEventListener('click', () => {
-    leaveNailSalon();
-  });
 
   // Feed snack buttons (in dining room scene)
   $$('.btn-snack').forEach(btn => {
@@ -5213,8 +4743,6 @@
     if (e.key === '4') btnGroom.click();
     if (e.key === '5') btnWalk.click();
     if (e.key === '6') btnSleep.click();
-    if (e.key === '7') btnNails.click();
-    if (e.key === '8') btnClean.click();
     if (e.key === '9') btnDress.click();
     if (e.key === '0') btnCook.click();
   });
